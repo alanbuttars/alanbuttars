@@ -1,0 +1,24 @@
+<article *ngIf="project" class="uk-article">
+  <div class="uk-grid">
+    <div class="uk-width-medium-1-1 uk-width-large-1-2">
+      <h1 class="uk-article-title">{{project.title}}</h1>
+      <p><a href="{{project.url}}">{{project.url}}</a></p>
+      <p class="uk-article-lead">{{project.subtitle}}</p>
+      <p>{{project.role}}, {{project.startYear}} &mdash; {{project.endYear}}</p>
+      <p>{{project.description}}</p>
+
+      <hr class="uk-article-divider" />
+
+      <div *ngFor="let icon of project.icons">
+        <a class="uk-margin-right" href="{{icon.url}}" target="_blank">
+          <i class="uk-icon-medium uk-icon-{{icon.icon}}"></i>
+        </a>
+      </div>
+    </div>
+
+
+    <div class="uk-width-medium-1-1 uk-width-large-1-2">
+      <img src="{{project.image}}" alt="{{project.title}}" />
+    </div>
+  </div>
+</article>

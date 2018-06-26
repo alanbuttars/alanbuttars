@@ -1,0 +1,51 @@
+<div class="ui grid">
+  <div class="one column row">
+    <div class="column">
+      <div class="ui container">
+        <h1 class="ui horizontal divider header">Welcome</h1>
+        <p>
+          Welcome to the personal website of Alan Buttars. I am a back-end programmer with experience in web application development.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="one column row">
+    <div class="column">
+      <div class="ui container">
+        <h1 class="ui horizontal divider header">My Work</h1>
+        <p>
+          Check out some of my projects! I'm always looking to work on software projects which further education.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="one column row">
+    <div class="column">
+      <div class="ui container">
+        <div class="ui two stackable cards">
+          <div class="card" *ngFor="let project of projects">
+            <a class="image" href="{{project.url}}" target="_blank">
+              <img src="{{project.mediumImage}}" alt="{{project.title}}" />
+            </a>
+            <div class="content">
+              <a class="header" href="{{project.url}}" target="_blank">{{project.title}}</a>
+              <div class="meta">
+                <span class="date">{{project.role}}, {{project.startYear}} &mdash; {{project.endYear}}</span>
+              </div>
+              <div class="description">
+                {{project.description}}
+              </div>
+            </div>
+            <div class="extra content">
+              <a href="{{icon.url}}" target="_blank" *ngFor="let icon of project.icons">
+                <i class="icon {{icon.icon}}"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

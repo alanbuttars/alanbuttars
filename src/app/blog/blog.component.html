@@ -1,0 +1,96 @@
+<!-- <div class="ui container"> -->
+<!--   <div class="ui basic segment"> -->
+<div id="blog">
+  <div class="ui segment">
+    <div class="ui left rail">
+      <div class="ui sticky blog navigation" style="width: 200px !important; height: 200px !important; left: 200px;">
+      <!-- <div class="ui sticky"> -->
+        <sui-tabset>
+          <div class="ui pointing secondary menu">
+            <a class="item" suiTabHeader="1">Recent</a>
+            <a class="item" suiTabHeader="2">Featured</a>
+          </div>
+          <div class="ui basic" suiTabContent="1">
+            <div class="ui card" *ngFor="let post of recentPosts">
+              <div class="content">
+                <a routerLink="/blog/{{post.id}}">
+                  <h4>{{post.title}}</h4>
+                </a>
+                <div class="meta">
+                  <span class="date">{{post.date | date: 'longDate'}}</span>
+                </div>
+                <div class="description">
+                  {{post.description}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ui basic" suiTabContent="2">
+            <div class="ui card" *ngFor="let post of featuredPosts">
+              <div class="content">
+                <a routerLink="/blog/{{post.id}}">
+                  <h4>{{post.title}}</h4>
+                </a>
+                <div class="meta">
+                  <span class="date">{{post.date | date: 'longDate'}}</span>
+                </div>
+                <div class="description">
+                  {{post.description}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </sui-tabset>
+      </div>
+    </div>
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<!-- <div class="ui grid"> -->
+<!--   <div class="one column row"> -->
+<!--     <div class="three wide computer only column"> -->
+<!--       <sui&#45;tabset> -->
+<!--         <div class="ui pointing secondary menu"> -->
+<!--           <a class="item" suiTabHeader="1">Recent</a> -->
+<!--           <a class="item" suiTabHeader="2">Featured</a> -->
+<!--         </div> -->
+<!--         <div class="ui basic segment" suiTabContent="1"> -->
+<!--           <div class="ui card" *ngFor="let post of recentPosts"> -->
+<!--             <div class="content"> -->
+<!--               <a class="header" routerLink="/blog/{{post.id}}"> -->
+<!--                 {{post.title}} -->
+<!--               </a> -->
+<!--               <div class="meta"> -->
+<!--                 <span class="date">{{post.date | date: 'longDate'}}</span> -->
+<!--               </div> -->
+<!--               <div class="description"> -->
+<!--                 {{post.description}} -->
+<!--               </div> -->
+<!--             </div> -->
+<!--           </div> -->
+<!--         </div> -->
+<!--  -->
+<!--         <div class="ui basic segment" suiTabContent="2"> -->
+<!--           <div class="ui card" *ngFor="let post of featuredPosts"> -->
+<!--             <div class="content"> -->
+<!--               <a class="header" routerLink="/blog/{{post.id}}"> -->
+<!--                 {{post.title}} -->
+<!--               </a> -->
+<!--               <div class="meta"> -->
+<!--                 <span class="date">{{post.date | date: 'longDate'}}</span> -->
+<!--               </div> -->
+<!--               <div class="description"> -->
+<!--                 {{post.description}} -->
+<!--               </div> -->
+<!--             </div> -->
+<!--           </div> -->
+<!--         </div> -->
+<!--       </sui&#45;tabset> -->
+<!--     </div> -->
+<!--     <div class="thirteen wide computer sixteen wide tablet column"> -->
+<!--       <router&#45;outlet></router&#45;outlet> -->
+<!--     </div> -->
+<!--   </div> -->
+<!-- </div> -->

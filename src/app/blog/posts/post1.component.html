@@ -1,0 +1,107 @@
+<div class="ui container">
+  <div class="ui basic segment">
+    <h2 class="ui header" id="play">The Quest to Destroy Neurotic Nate</h2>
+    <p>In college I had a roommate, Neurotic Nate. I'll probably mention Neurotic Nate in future posts, which is why I gave him a memorable alliterative name. Neurotic Nate is brilliant (but mostly just neurotic) and has a particular skill/obsession with mobile games. One of them was Ruzzle™, the mobile equivalent of Boggle™. In both games, you are presented with a 4x4 grid of random characters and have to form as many words as possible by joining neighboring characters.</p>
+
+    <p>Neurotic Nate destroys at Ruzzle™. He obliterates competition like he obliterates pizza rolls. The first time I faced him he tripled my score and told me my game was weak. My game. Was weak. I'd never felt such shame.</p>
+
+    <p>But Neurotic Nate underestimated two things: my pettiness, and how unwisely I use my free time.</p>
+
+    <!-- <div class="uk&#45;grid"> -->
+    <!--   <form #f="ngForm" (ngSubmit)="breakRuzzle(f)" novalidate> -->
+    <!--     <div class="uk&#45;width&#45;1&#45;1 uk&#45;width&#45;large&#45;1&#45;2"> -->
+    <!--       <ng&#45;container *ngFor="let row of [0,1,2,3]"> -->
+    <!--         <div *ngFor="let col of [0,1,2,3]" class="ruzzle&#45;cell&#45;puttable" ondrop="drop(event)" ondragover="allowDrop(event)"> -->
+    <!--           <input  class="ruzzle&#45;cell"  -->
+    <!--                   name="grid[{{row}}][{{col}}]" -->
+    <!--                   ngModel -->
+    <!--                   required -->
+    <!--                   data&#45;special="" -->
+    <!--                   value="" -->
+    <!--                   maxlength="1" -->
+    <!--                   (input)="jump($event)" -->
+    <!--                   (focusout)="assignPoints($event)" -->
+    <!--                   /> -->
+    <!--         </div> -->
+    <!--       </ng&#45;container> -->
+    <!--     </div> -->
+    <!--     <div class="uk&#45;width&#45;1&#45;1 uk&#45;width&#45;large&#45;1&#45;2"> -->
+    <!--       <button class="uk&#45;button uk&#45;button&#45;large">Go</button> -->
+    <!--     </div> -->
+    <!--   </form> -->
+    <!-- </div> -->
+
+    <h2 class="ui header" id="tutorial">The Game</h2>
+    <p>For a human, Ruzzle™ is a nightmare. Words are formed forwards, backwards, and diagonally — not friendly to human eyes. For a computer, it's an absolute breeze. At least, I can only assume it is. Searching a grid and keeping track of an impossibly large number of grid paths seems exactly the type of thing a computer would master.</p>
+
+    <p>So how would we strategically solve Ruzzle™? If you're a new programmer, here is my genuine, honest-to-goodness, print-this-out-and-laminate-it advice: stop thinking...let things happen...and be...the computer. If you had practically unlimited brain power, no understanding of human language and were given this task, you would say "Language, schmanguage. You could give me a grid of heavily-rotated Japanese characters in Wingdings font, and as long as you gave me a dictionary I would still make Neurotic Nate look like that kid who used to hit his own teammates in dodgeball."</p>
+
+    <p>Really, the programming solution to Ruzzle™ isn't to look for words, but to blindly and methodically go down every possible path of grid positions and test if the word representing that path exists in a word dictionary. A pseudo-code solution might look like this.</p>
+
+    <pre>
+function search():
+  for every position in grid:
+    wordSoFar := character at position
+    searchHelper(position, wordSoFar)
+
+function searchHelper(position, wordSoFar):
+  for every unvisited neighbor of position in grid:
+    wordSoFar := wordSoFar + character at neighbor
+    searchHelper(neighbor, wordSoFar)
+  if wordSoFar is in dictionary:
+    add wordSoFar to foundWords      
+    </pre>
+
+    <p>Do you smell that, Neurotic Nate? That's the smell of fear, which you haven't smelled since we cleaned the fridge after winter break of 2013.</p>
+
+    <p>But there's a small problem with this code which could create performance problems. What if we were to have a grid that looked like this?</p>
+
+    <p>Clearly, if we were to start at the grid position that holds 'Q', we are going to be out of luck because there are no English words that begin with 'qd', 'qk', or 'qz'. With the current algorithm, we would waste time searching thousands of paths starting at 'Q' despite knowing after just two characters that we're never going to find another word. Why not cut the algorithm short once we realize the search is fruitless?</p>
+
+    <pre>
+function search():
+  for every position in grid:
+    wordSoFar := character at position
+    searchHelper(position, wordSoFar)
+
+function searchHelper(position, wordSoFar):
+  if wordSoFar is the prefix of any word in the dictionary
+    for every unvisited neighbor of position in grid:
+      wordSoFar := wordSoFar + character at neighbor
+      searchHelper(neighbor, wordSoFar)
+  if wordSoFar is in dictionary:
+    add wordSoFar to foundWords
+    </pre>
+
+    <h2 class="header" id="browse">Browse the code</h2>
+    <p>Now we've got something. Source code, anyone? I'm feeling generous, so I'll throw in Java, C++, and PHP. Don't get used to it.</p>
+
+    <sui-tabset #code>
+      <div class="ui pointing secondary menu">
+        <a class="item" suiTabHeader="1">Java</a>
+        <a class="item" suiTabHeader="2">C++</a>
+        <a class="item" suiTabHeader="3">PHP</a>
+      </div>
+      <div class="ui segment" suiTabContent="1">
+        <pre><code highlight [code]="javaCode" [language]="['java']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="2">
+        <pre><code highlight [code]="cppCode" [language]="['cpp']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="3">
+        <pre><code highlight [code]="phpCode" [language]="['php']"></code></pre>
+      </div>
+    </sui-tabset>
+  </div>
+</div>
+
+<div class="ui right rail">
+  <div class="ui sticky page navigation" style="width: 200px !important; height: 200px !important; right: 200px !important;">
+   <div class="ui vertical fluid secondary pointing menu"> 
+      <a class="item active" scrollTo scrollTargetSelector="body" scrollYTarget="0">Top</a>
+      <a class="item" scrollTo href="#play">Play</a>
+      <a class="item" scrollTo href="#tutorial">Tutorial</a>
+      <a class="item" scrollTo href="#browse">Browse the Code</a>
+    </div>
+  </div>
+</div>
