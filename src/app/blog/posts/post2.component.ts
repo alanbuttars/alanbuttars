@@ -5,4 +5,14 @@ import { Component } from '@angular/core';
   templateUrl: './post2.component.html',
 })
 export class BlogPost2Component {
+  registerRest = ``;
+
+  registerInsert = ``;
+
+  registerVerify = ``;
+
+  loginRest = ``;
+
+  loginDatabase = ``;
+
 }

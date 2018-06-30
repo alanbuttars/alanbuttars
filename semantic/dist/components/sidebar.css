@@ -92,10 +92,6 @@ body.pushable {
 }
 
 /* Page Context */
-.pushable:not(body) {
-  -webkit-transform: translate3d(0, 0, 0);
-          transform: translate3d(0, 0, 0);
-}
 .pushable:not(body) > .ui.sidebar,
 .pushable:not(body) > .fixed,
 .pushable:not(body) > .pusher:after {

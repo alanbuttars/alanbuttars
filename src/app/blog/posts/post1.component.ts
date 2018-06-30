@@ -40,19 +40,9 @@ export class BlogPost1Component {
   constructor(private renderer: Renderer2) {}
 
   ngAfterViewInit() {
-    console.log("TRYING");
-    console.log($(".ui.sticky.page.navigation"));
-    console.log($(".ui.sticky.blog.navigation"));
-
-
     $(".ui.sticky.page.navigation").sticky({
       context: "#blog"
     });
-
-    $(".ui.sticky.blog.navigation").sticky({
-      context: "#blog"
-    });
-
   }
 
   javaCode = `package ruzzle;

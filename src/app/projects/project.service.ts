@@ -63,7 +63,7 @@ export const PROJECTS = [
     squareImage: "assets/images/efp-square.png",
     startYear: "2014",
     endYear: "2015",
-    url: "https://edufp.org",
+    url: "https://www.educationforpurpose.org",
     icons: [
       {
         url: "https://twitter.com/Edu4Purpose",

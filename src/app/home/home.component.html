@@ -25,12 +25,14 @@
     <div class="column">
       <div class="ui container">
         <div class="ui two stackable cards">
-          <div class="card" *ngFor="let project of projects">
+          <div class="ui link card" *ngFor="let project of projects">
             <a class="image" href="{{project.url}}" target="_blank">
               <img src="{{project.mediumImage}}" alt="{{project.title}}" />
             </a>
             <div class="content">
-              <a class="header" href="{{project.url}}" target="_blank">{{project.title}}</a>
+              <div class="header">
+                {{project.title}}
+              </div>
               <div class="meta">
                 <span class="date">{{project.role}}, {{project.startYear}} &mdash; {{project.endYear}}</span>
               </div>

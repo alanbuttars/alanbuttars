@@ -1,9 +1,6 @@
-<!-- <div *ngIf="post"> -->
-<!--   <div class="ui grid"> -->
-<!--     <div class="sixteen wide column computer tablet only"> -->
 <ng-container *ngIf="post">
-  <div class="ui container">
-    <div>
+  <div class="ui grid">
+    <div class="sixteen wide column computer tablet only">
       <div class="ui one cards">
         <div class="ui card">
           <div class="ui fluid image">
@@ -59,5 +56,3 @@
   <app-blog-post-7 *ngIf="post.id == '7'"></app-blog-post-7>
   <app-blog-post-8 *ngIf="post.id == '8'"></app-blog-post-8>
 </ng-container>
-
-

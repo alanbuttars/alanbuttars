@@ -1,6 +1,215 @@
-<div class="uk-grid">
-  <div class="uk-width-small-1-1 uk-width-large-3-4">
+<div class="ui container">
+  <div class="ui basic segment">
+    <h2 class="ui header">Welcome to OpenQollo</h2>
+    <p><a href="http://phonegap.com">PhoneGap</a> has some great documentation, but how much can you learn from little code snippets? That's why I created <a href="https://github.com/alanbuttars/openqollo">OpenQollo</a>, a simple albeit full-featured image-sharing application that includes some typical user operations you would include in a mobile app &mdash; registration, login, messaging, and interactions with the file system and camera. Because I love you, I've released OpenQollo as an open-source code base under a GNU GPL v2.0 license. In the following few posts, I'll walk through the main functionality of the application, touching on different topics like:</p>
+    <ul class="ui list">
+    	<li><a href="http://phonegap.com">PhoneGap</a> and its Apache supporting engine, <a href="http://cordova.apache.org/">Cordova</a></li>
+    	<li>Google's <a href="https://angularjs.org">Angular JS</a>, a fantastic JavaScript library for creating easy MVC apps</li>
+    	<li>The MVC (Model View Controller) pattern in practice</li>
+    </ul>
+
+    <h2 class="ui header" id="registration-and-login">Encryption: The Basics of Registration and Login</h2>
+		<p>If you've never implemented your own login functionality before, don't worry; many developers haven't. So let's try it together, shall we? As a simple image-sharing app, OpenQollo will do most of its work by making authenticated calls to a PHP REST layer. We'll leave the authentication logic for Part 2, but for now we'll cover registration and login in PHP. But before we do, let's over the basics of storing user information:</p>
+
+    <div class="ui list">
+      <div class="item">
+        <i class="right triangle icon"></i>
+        <div class="content">
+          <div class="header">Never write your own encryption</div>
+          <div class="description">Rule #1 of security: unless you're a world-renowned mathematician (in which case, why would you be reading this? Go count something, you beautiful mind), never write your own encryption. Swallow your pride and accept the expertise of thousands of people much more gifted people than you or I.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <i class="right triangle icon"></i>
+        <div class="content">
+          <div class="header">Never store user-identifiable information in plaintext</div>
+          <div class="description">A paranoid rule, but a good one, is this: if you wouldn't want your worst enemy to know it, then don't store it in plaintext.</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <i class="right triangle icon"></i>
+        <div class="content">
+          <div class="header">Passwords should always be digested</div>
+          <div class="description">A little vocabulary lesson for the fresh kids on the block. <strong>Encryption</strong> is a two-way function (meaning that anything encrypted can be decrypted so long as the encryption key is known. <i>If you ever encrypt user passwords in a database, you deserve to be slapped upside the head with a 1990s Lenovo laptop.</i> User passwords should NEVER be encrypted; they should be hashed with a <strong>randomly-generated, unique salt</strong> to protect against rainbow table attacks. Don't get wrapped up in the vocabulary right now, just trust that 'ole Buttars won't lead you astray.</div>
+        </div>
+      </div>
+    </div>
+
+		<h3>Registration</h3>
+		<p>Let's start with a simple email/password registration strategy in the PHP REST layer. The steps are pretty basic:</p>
+		<ol class="ui list">
+      <li>In <code>register_rest.php</code>, parse the HTTP request parameters for email and password</li>
+      <li>In <code>register_verify.php</code>, verify the email and password meet basic requirements (e.g., the email address is correctly formatted, the password has a minimum number of characters and numbers)</li>
+			<li>If valid, hash the email with a static salt (why? it will be more clear when we review login) and hash the password with a dynamic salt. Store the digested email, the digested password, and the password salt in the database</li>
+		</ol>
+
+    <!-- Registration code samples -->
+    <sui-tabset #register_code>
+      <div class="ui pointing secondary menu">
+        <a class="item" suiTabHeader="1">register_rest.php</a>
+        <a class="item" suiTabHeader="2">register_insert.php</a>
+        <a class="item" suiTabHeader="3">register_verify.php</a>
+      </div>
+      <div class="ui segment" suiTabContent="1">
+        <pre><code highlight [code]="registerRest" [language]="['php']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="2">
+        <pre><code highlight [code]="registerInsert" [language]="['php']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="3">
+        <pre><code highlight [code]="registerVerify" [language]="['php']"></code></pre>
+      </div>
+    </sui-tabset>
+
+		<ul id="tab-register" class="uk-switcher">
+      <li>
+        <pre>
+          <code class="php"><?php echo escapeCode("/docs/OpenQollo_1_register_rest.txt"); ?>
+          </code>
+        </pre>
+      </li>
+      <li>
+        <pre>
+          <code class="php"><?php echo escapeCode("docs/OpenQollo_1_register_insert.txt"); ?>
+          </code>
+        </pre>
+      </li>
+      <li>
+        <pre>
+          <code class="php"><?php echo escapeCode("docs/OpenQollo_1_register_verify.txt"); ?>
+          </code>
+        </pre>
+      </li>
+    </ul>
+
+		<h3>Login</h3>
+		<p>Logging in via the PHP REST layer is even simpler, because most of our work has been done for us.</p>
+    <ol class="ui list">
+      <li>In <code>login_rest.php</code>, parse the HTTP request parameters for email and password</li>
+      <li>In <code>login_database.php</code>, attempt to retrieve the salt and digested password for the given email</li>
+      <li>Digest the input password with the stored salt, then compare the result with the stored digested password. If they match, the user is authenticated</li>
+    </ol>
+
+    <!-- Login code samples -->
+    <sui-tabset #login_code>
+      <div class="ui pointing secondary menu">
+        <a class="item" suiTabHeader="1">login_rest.php</a>
+        <a class="item" suiTabHeader="2">login_database.php</a>
+      </div>
+      <div class="ui segment" suiTabContent="1">
+        <pre><code highlight [code]="loginRest" [language]="['php']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="2">
+        <pre><code highlight [code]="loginDatabase" [language]="['php']"></code></pre>
+      </div>
+    </sui-tabset>
+
+    <h2 class="ui header" id="phonegap">PhoneGap: From the Beginning</h2>
+    <p>Boom, we've got ourselves a REST layer! Now all we need is the PhoneGap application to call to it. Before getting started, I advise that you have PhoneGap's <a href="http://docs.phonegap.com/en/edge/guide_cli_index.md.html#The%20Command-Line%20Interface">Cordova CLI installed</a>. Once that's ready, you can start a PhoneGap application with just a couple command-line arguments:</p>
+    <div class="ui segment">
+      <pre><code highlight [language]="bash">#!/bin/sh
+# install cordova via http://cordova.apache.org/docs/en/4.0.0/guide_cli_index.md.html
+sudo npm install -g cordova
+
+# create the project
+cordova create qollo com.alanbuttars.qollo Qollo
+
+# add support for chosen platforms
+cd qollo
+
+# list the available platforms. On my system, this returns:
+#   Installed platforms:
+#   Available platforms: amazon-fireos, android, blackberry10, firefoxos, ubuntu
+cordova platform list
+
+cordova platform add blackberry10
+cordova platform add firefoxos
+cordova platform add android
+
+# install bower via http://bower.io/
+sudo npm install -g bower
+
+# use bower to install your chosen libraries
+cd www
+bower install angular
+bower install angular-ui-router
+bower install jquery</code></pre>
+    </div>
+
+		<h2 class="ui header" id="angular">Angular JS and MVC</h2>
+		<p>I'll leave the real meat of PhoneGap for other posts; for now, let's start with an introduction to <a href="http://angularjs.org">Angular JS</a>. As a quick disclaimer, I have only been working with Angular JS for a few months, but already I can see why it has gained a huge following in the front-end dev community. Angular JS acknowledges the inherent shortcoming of HTML, which is that it was never intended for dynamic views. Angular circumvents this shortcoming by extending the vocabulary of HTML and giving that vocabulary dynamic meaning, which creates an incredibly intuitive MVC pattern.</p>
+		<p>Angular JS makes MVC so easy that you can see it very clearly in the OpenQollo <a href="#downloads">docs</a>):</p>
+		<ol class="ui list">
+      <li>Model &mdash; application data and business logic (represented by Angular JS <a href="https://docs.angularjs.org/api/ng/function/angular.module">modules</a> and <a href="https://docs.angularjs.org/api/ng/service">services</a>)</li>
+      <li>View &mdash; front-end display of information (represented by the HTML template)</li>
+      <li>Controller &mdash; mediator which transforms data from the model onto the view and actions on the view into actions on the model (represented by Angular JS <a href="https://docs.angularjs.org/api/ng/directive/ngController">controllers</a>)</li>
+    </ol>
+    <p>Let's see it in action.</p>
+
+    <!-- Login client code samples -->
+    <ul class="uk-tab uk-margin-top" data-uk-tab="{connect: '#tab-mvc'}">
+      <li><a href="">index.html</a></li>
+      <li><a href="">login.html</a></li>
+      <li><a href="">app.js</a></li>
+      <li><a href="">controllers.js</a></li>
+      <li><a href="">services.js</a></li>
+    </ul>
+
+    <ul id="tab-mvc" class="uk-switcher">
+      <li>
+        <pre>
+          <code class="html"><?php echo escapeCode("/docs/OpenQollo_1_index.html"); ?>
+          </code>
+        </pre>
+      </li>
+      <li>
+        <pre>
+          <code class="html"><?php echo escapeCode("/docs/OpenQollo_1_login.html"); ?>
+          </code>
+        </pre>
+      </li>
+      <li>
+        <pre>
+          <code class="javascript"><?php echo escapeCode("docs/OpenQollo_1_app.js"); ?>
+          </code>
+        </pre>
+      </li>
+      <li>
+        <pre>
+          <code class="javascript"><?php echo escapeCode("docs/OpenQollo_1_controllers.js"); ?>
+          </code>
+        </pre>
+      </li>
+      <li>
+        <pre>
+          <code class="javascript"><?php echo escapeCode("docs/OpenQollo_1_services.js"); ?>
+          </code>
+        </pre>
+      </li>
+    </ul>
+
+    <h2 class="ui header" id="code">Browse the code</h2>
+    <img class="uk-align-left" alt="OpenQollo login" src="assets/images/openqollo_1_login.gif" />
+    <p>All right, I get it. You're tired of reading my ramblings. Check out this blog entry's code at my public
+    <a href="https://github.com/alanbuttars/openqollo/tree/40fc5aa1600804f4611b1df0c52d75ef200d27fd">GitHub repository</a>, and make sure to come back around
+    to view my future entries on OpenQollo.</p>
+    <p>Next week's lesson? Authenticating REST calls after logging in.</p>
   </div>
-  <div class="uk-width-large-1-4">
+</div>
+
+<div class="ui right rail">
+  <div class="ui sticky page navigation">
+   <div class="ui vertical fluid secondary left menu"> 
+      <div class="left item header">
+        Navigation
+      </div>
+      <a class="left item" scrollTo scrollableElementSelector="body" scrollYTarget="0">Top</a>
+      <a class="left item" scrollTo href="#registration-and-login">Registration and Login</a>
+      <a class="left item" scrollTo href="#phonegap">PhoneGap</a>
+      <a class="left item" scrollTo href="#angular">Angular JS</a>
+      <a class="left item" scrollTo href="#code">Browse the Code</a>
+    </div>
   </div>
 </div>
