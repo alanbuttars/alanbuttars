@@ -76,7 +76,7 @@ function registerUser($email, $password) {
   $digestedPassword = digest($password, $salt);
   
   $conn = new PDO("mysql:host=localhost;dbname=DB_ALIAS", "DB_USERNAME", "DB_PASSWORD");
-  $sql = 	"INSERT INTO users " . //
+  $sql = "INSERT INTO users " . //
     "(email, password, salt) " . //
     "VALUES(:digestedEmail, :digestedPassword, :salt)";
   $stmt = $conn -> prepare($sql);
@@ -350,71 +350,67 @@ entryControllers.controller('LoginCtrl', ['AuthService', '$scope', '$state',
     // variables bound to the view
     $scope.user = {};
     $scope.errors = {};
-
-        // function bound to the button click on the view
-        $scope.login = function() {
-        	$scope.errors = {};
-        	
-        	AuthService.login($scope.user).then(
-        		function(data) {
-            		var successInfo = data["success"];
-                	var errorInfo = data["errors"];
-
-                	if (successInfo != null) {
-                		// We'll talk about this later
-						window.localStorage.setItem("userId", successInfo["userId"]);
-
-						$state.go('app');
-                	}
-                	else if (errorInfo != null) {
-                		$scope.errors = errorInfo;
-            		}
-            		else {
-            			$scope.errors["server"] = "The server failed to log you in. Please retry.";
-            		}
-        		},
-        		function(error) {
-        			$scope.errors["server"] = "The server failed to log you in. Please retry.";
-        		}
-        	);
-        };
-
+    
+    // function bound to the button click on the view
+    $scope.login = function() {
+      $scope.errors = {};
+      
+      AuthService.login($scope.user).then(
+        function(data) {
+          var successInfo = data["success"];
+          var errorInfo = data["errors"];
+          
+          if (successInfo != null) {
+            // We'll talk about this later
+            window.localStorage.setItem("userId", successInfo["userId"]);
+            
+            $state.go('app');
+          }
+          else if (errorInfo != null) {
+            $scope.errors = errorInfo;
+          }
+          else {
+            $scope.errors["server"] = "The server failed to log you in. Please retry.";
+          }
+        },
+        function(error) {
+          $scope.errors["server"] = "The server failed to log you in. Please retry.";
+        }
+      );
+    };
 }]);`;
 
   mvcServices = `// Angular has all sorts of built-in services, but if you really want powerful 
 // business logic, you'll define your own via the module.factory method. Here, 
 // we create an AuthService and inject other service dependencies ($http and $q).
 entryApp.factory('AuthService', function($http, $q) {
+  var login = function(user) {
+    // $q allows you to run asynchronous functions and handle the results
+    // when they are done processing
+    var deferred = $q.defer();
 
-    var login = function(user) {
-    	
-    	// $q allows you to run asynchronous functions and handle the results
-    	// when they are done processing
-        var deferred = $q.defer();
-
-        
-        // $http is a simple service for HTTP communication
-        $http({
-            method	: 'POST',
-            url		: 'http://qollo.alanbuttars.com/server/rest/login.php',
-            data	: user,
-            headers : { 'content-type':'application/json' }
-        })
-        .success(function(data) {
-            console.log("login success: ", JSON.stringify(data));
-            deferred.resolve(data);
-        })
-        .error(function(error) {
-            console.log("login error: ", JSON.stringify(error));
-            deferred.reject(error);
-        });
-
-        return deferred.promise;
-    };
-
-    return {
-        login: login,
-    }
+    // $http is a simple service for HTTP communication
+    $http({
+      method  : 'POST',
+      url     : 'http://qollo.alanbuttars.com/server/rest/login.php',
+      data    : user,
+      headers : { 'content-type':'application/json' }
+    })
+    .success(function(data) {
+      console.log("login success: ", JSON.stringify(data));
+      deferred.resolve(data);
+    })
+    .error(function(error) {
+      console.log("login error: ", JSON.stringify(error));
+      deferred.reject(error);
+    });
+    
+    return deferred.promise;
+  };
+  
+  return {
+    login: login,
+  }
 
 });`;
 
