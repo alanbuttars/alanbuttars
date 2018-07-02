@@ -1,6 +1,88 @@
-<div class="uk-grid">
-  <div class="uk-width-small-1-1 uk-width-large-3-4">
-  </div>
-  <div class="uk-width-large-1-4">
+<div class="ui container">
+  <div class="ui basic segment">
+		<p>At this point we've had a nice long introduction to PhoneGap and Angular JS, with the former taking a back seat to the latter. That's about to change; in the next couple posts, I will be going over the real meat and potatoes of the OpenQollo app: namely, taking pictures with the device's camera and transferring files to and from our REST server.</p>
+		<p>Fortunately, both of these tasks are greatly simplified by a couple PhoneGap/Cordova plugins (for a full list of available plugins, check out <a href="http://docs.phonegap.com/en/edge/cordova_plugins_pluginapis.md.html#Plugin%20APIs">their documentation</a>). Let's discuss them.</p>
+
+    <h2 class="ui header" id="camera">Cordova's <code>navigator.camera</code></h2>
+    <p>See <a href="http://plugins.cordova.io/#/package/org.apache.cordova.camera">http://plugins.cordova.io/#/package/org.apache.cordova.camera</a></p>
+    <p>The <code>org.apache.cordova.camera</code> plugin is a flexible library for accessing not only the device's camera but also the photo library. Adding it to your project is dead simple:</p>
+
+    <div class="ui segment">
+      <pre><code highlight [language]="['shell']">alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.camera</code></pre>
+    </div>
+
+    <p>There's very little info I can provide on the camera plugin that can't be superceded by their fantastic documentation, so instead I'll simply show you a couple code examples. For more full-fledged code, check out the OpenQollo code at this point in the <a href="downloads">downloads</a> section.</p>
+
+    <sui-tabset #camera_code>
+      <div class="ui pointing secondary menu">
+        <a class="item" suiTabHeader="1">view.html</a>
+        <a class="item" suiTabHeader="2">controller.js</a>
+        <a class="item" suiTabHeader="3">model.js</a>
+      </div>
+      <div class="ui segment" suiTabContent="1">
+        <pre><code highlight [code]="cameraView" [language]="html"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="2">
+        <pre><code highlight [code]="cameraController" [language]="javascript"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="3">
+        <pre><code highlight [code]="cameraModel" [language]="javascript"></code></pre>
+      </div>
+    </sui-tabset>
+
+		<h2 class="ui header" id="filetransfer">Cordova's <code>FileTransfer</code></h2>
+		<p>See <a href="http://plugins.cordova.io/#/package/org.apache.cordova.file-transfer">http://plugins.cordova.io/#/package/org.apache.cordova.file-transfer</a></p>
+		<p>Accessing the camera and photo library is all well and good, but what do we do with the image once we have a handle on it? OpenQollo is a photo-sharing app, so we need the ability to upload an image from a user's device to the host server. Enter the <code>org.apache.cordova.file-transfer</code> plugin, along with it's dependency, <code>org.apache.cordova.file</code>. Let's add them to our application.</p>
+
+    <div class="ui segment">
+      <pre><code highlight [language]="shell">alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.file
+alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.file-transfer</code></pre>
+    </div>
+
+		<p>While <code>org.apache.cordova.file</code> is useful for accessing and writing files on the client side, we are more interested in the <code>org.apache.cordova.file-transfer</code>'s very extensible <code>FileTransfer</code> object. All that is required is to specify a source, a destination, and a handful of options. Again, I'll bow to the superiority of Cordova's documentation, but the below example should help you get started.</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="sendImage" [language]="javascript"></code></pre>
+    </div>
+
+		<h2 class="ui header" id="process">Processing files on the server</h2>
+		<p>Boom, it's just that easy on the client side. Now let's dive into a bit of the server side. How do we process the file sent via Cordova's <code>FileTransfer</code> object? There are more than enough examples online in your chosen server-side language, but if you're using PHP, you can start with the below code:</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="uploadImage" [language]="php"></code></pre>
+    </div>
+
+		<p>From here you can do anything you like with the uploaded image. You can it in a database, store it to a file system, or even manipulate the file streams themselves to create thumbnails. In OpenQollo, we simply store these images in a database blob for later retrieval.</p>
+
+		<h2 class="ui header" id="code">Browse the code</h2>
+		<p>And it's just that simple. By the end of today's lesson, you should be able to:</p>
+		<ul class="ui list">
+			<li>Utilize Cordova's <code>navigator.camera</code> to capture images</li>
+			<li>Send files over HTTP to a server with Cordova's <code>FileTransfer</code></li>
+			<li>Receive files sent over HTTP on a server</li>
+		</ul>
+		
+    <p>Believe it or not, we are getting very close to building a full-fledged photo-sharing app! To see the progress so far, check out the <a href="https://github.com/alanbuttars/openqollo/tree/de99b80dbbe3efcec83a8c488446ec8f5e41cf20">OpenQollo GitHub repository</a>.</p>
+		<p><strong>Edit.</strong><br/>You may prefer instead to send your files to an FTP server, rather than a REST endpoint. For that, you'll want to use the <code>cordova-plugin-ftp</code>, available at <a href="https://github.com/xfally/cordova-plugin-ftp">https://github.com/xfally/cordova-plugin-ftp</a>:</p>
+
+    <div class="ui segment">
+      <pre><code highlight [language]="shell">alan@buttars ~/openqollo $ cordova plugin add cordova-plugin-ftp
+alan@buttars ~/openqollo $ cordova prepare</code></pre>
+		</div>
+	</div>
+</div>
+
+<div class="ui right rail">
+  <div class="ui sticky page navigation">
+   <div class="ui vertical fluid secondary left menu"> 
+      <div class="left item header">
+        Navigation
+      </div>
+      <a class="left item" scrollTo scrollableElementSelector="body" scrollYTarget="0">Top</a>
+      <a class="left item" scrollTo href="#camera">Camera</a>
+      <a class="left item" scrollTo href="#filetransfer">Sending files from the client</a>
+      <a class="left item" scrollTo href="#process">Processing files on the server</a>
+      <a class="left item" scrollTo href="#code">Browse the code</a>
+    </div>
   </div>
 </div>

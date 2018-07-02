@@ -1,6 +1,93 @@
-<div class="uk-grid">
-  <div class="uk-width-small-1-1 uk-width-large-3-4">
+<div class="ui container">
+  <div class="ui basic segment">
+    <h2 class="ui header">Review</h2>
+    <p>If you read my last post, you already know how to implement simple registration and login REST calls via PHP, and call that logic from <a href="http://angularjs.org">Angular JS</a>'s $http service. If you've done that, then congratulations! You've jumped a major hurdle in starting any application. Storing passwords is a process that gets screwed up all the time, so give yourself a pat on the back for doing it correctly.</p>
+    <p>The next big hurdle is how we use that login information. In other words, after a user passes the login screen, how do we identify that they are authorized to view other pages? How do we identify them? And perhaps most importantly, how do we prevent other users from pretending they are someone else in order to get someone else's information?</p>
+    <p>If you already know the answer to this question, you may want to skip this post. There are a thousand out-of-the-box solutions to this problem online, and this tutorial may be overkill. Otherwise, let's get started!</p>
+
+    <h2 class="ui header" id="tokens">Session tokens: What are they?</h2>
+    <p>In a typical web application, a user will sign in with their username and password, and in turn the server will return some sort of data called a "session token." If you're a beginner to web programming or don't know what a session token is, check out this analogy:</p>
+    <blockquote>
+      It's a Friday night, and you want to get your dance on. You go to your favorite club, where the bouncer checks your ID. Satisfied, he stamps your hand. Throughout the night, you go to the bar to buy drinks. Each time you do, the bartender has to check that you are of drinking age. However, she doesn't check your ID; she just checks to ensure that you have a stamp.
+    </blockquote>
+    <p>In this scenario, the club is the web application, your ID is your username and password, the drinks are the data you want to retrieve from the application, and the stamp is the session token or cookie. This isn't a perfect analogy, of course. In reality, the session token is much more than a stamp. It's usually a long alphanumeric string that is associated with your identity and is only valid for a limited time (after which a user may have to reenter their username and password to get a fresh token). But you get the point.</p>
+
+    <h3>How to authenticate with a session token</h3>
+    <p>The session token strategy used in OpenQollo wasn't designed by me; that distinction goes to Thomas Grim in <a href="http://thomasgr.im/shares/2013/making-app-with-phonegap-jqm-part-3-stateless-authentication-layer/">this excellent blog post.</a> The basic idea is this:</p>
+
+    <ul class="ui list">
+      <li>When a user registers, thee server will generate a public and private token (both long, alphanumeric strings, if that helps you visualize them)</li>
+      <li>When a user logs in, the server will return to the client both the public and private tokens</li>
+      <li>For every subsequent server request, the client will send three pieces of data in the header of the HTTP request:
+        <ul>
+          <li>The public token</li>
+          <li>A timestamp</li>
+          <li>A hash of the private token and the timestamp</li>
+        </ul>
+      </li>
+      <li>For each of these server requests, the server will validate the request by ensuring that:
+        <ul>
+          <li>The sent timestamp is recent (i.e., within an acceptable time range)</li>
+          <li>The public token corresponds to a registered user</li>
+          <li>The public token's corresponding registered user has a private token, and that the hash of the private token and sent timestamp is equal to the hash sent in the header</li>
+        </ul>
+      </li>
+    </ul>
+    <p>Thomas Grim, you beautiful bastard. Your solution is like my college crush: beautiful, elegant, and far too clever to be associated with me.</p>
+    <p>There are only three ways for a cracker to beat this system (<a routerLink="/contact">contact</a> me if you know of another), all of which would require the cracker to be able to watch the traffic over an unsecured network:</p>
+    <ul class="ui list">
+      <li>Grabbing the public and private tokens as they are passed back to the user during login</li>
+      <li>Grabbing and reusing the public token, hash, and timestamp that are passed from a user to REST (which would require the cracker to use those pieces before the timestamp expires)</li>
+      <li>Grabbing the public token, hash, and timestamp as they are passed from a user to REST, then deriving the private token from the hash through the use of rainbow tables (which would need to be completed before the tokens expire)</li>
+    </ul>
+    <p>The first two are valid concerns, certainly, but we can further limit the likelihood of a breach by refreshing tokens frequently. But I'll leave that task to you and your application. For now, let's get to the code.</p>
+
+    <h2 class="ui header" id="client-side">Storing the tokens: HTML5 Web Storage</h2>
+    <p>Let's take this from the beginning. In last week's lesson, after logging in successfully, the PHP REST code would return the user's ID. But with some tweaking, we can instead return a pair of public and private tokens (see the <a href="#downloads">downloads</a> to see how these tokens are generated and stored). These tokens will be used for every subsequent REST call, so we need to store them on the client somehow. Why not use the <a href="http://diveintohtml5.info/storage.html">HTML5 web storage API</a>?</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="loginController" [language]="javascript"></code></pre>
+    </div>
+
+    <h3>Sending the tokens: Angular JS Interceptors</h3>
+    <p>We need to send the public token, hash, and timestamp for every HTTP request. Angular JS makes this easy with <a href="https://docs.angularjs.org/api/ng/service/$http">interceptors</a>. All we have to do is register an interceptor which adds a couple headers to every request, and we are good to go. To generate the hash, we will use the excellent <a href="http://code.google.com/p/crypto-js/">Crypto-JS library</a>.</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="interceptor" [language]="javascript"></code></pre>
+    </div>
+
+    <h2 class="ui header" id="server-side">Authorizing the tokens: PHP REST filter</h2>
+		<p>Boom! The client code is done. Now all we need is to introduce the server-side code which will validate calls to the server. We've already discussed the verification we need to make on the sent headers:</p>
+		<ul>
+			<li>The timestamp is recent (i.e., within an acceptable time range)</li>
+			<li>The public token corresponds to a registered user</li>
+			<li>The public token's corresponding registered user has a private token, and that the hash of the private token and sent timestamp is equal to the hash sent in the header</li>
+		</ul>
+
+		<p>All of this is simple stuff, except for dealing with the timestamp. In order to determine whether the sent timestamp is within an acceptable range of the current time, we have to make sure the sent timestamp and comparison timestamp are in the same timezone. Good god, why can't we all live in one timezone? Just pick a long strip of land and move there.</p>
+		<p>Okay, okay, it's not that bad. Just keep in mind that the sent timestamp should be a UTC timestamp, so you need to compare it with a UTC timestamp. Unless you for some ungodly reason can't figure out how to get a simple UTC timestamp in PHP, in which case you'll overcomplicate it and convert both timestamps to GMT:</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="authenticateRest" [language]="php">		</code></pre>
+    </div>
+
+    <h2 class="ui header" id="code">Check out the source</h2>
+    <p>And there we go! If we simply include the above script into each REST service call (except for registration and login, of course), we can ensure each REST call is validated and we can determine which user is making the call.</p>
+    <p>Want more? See how I used the above code in OpenQollo to generate a simple profile information page in this week's commits to my <a href="https://github.com/alanbuttars/openqollo/tree/823ff0babe596bd6072ef20708d94f857331ed5b">GitHub page</a>.</p>
   </div>
-  <div class="uk-width-large-1-4">
+</div>
+
+<div class="ui right rail">
+  <div class="ui sticky page navigation">
+   <div class="ui vertical fluid secondary left menu"> 
+      <div class="left item header">
+        Navigation
+      </div>
+      <a class="left item" scrollTo scrollableElementSelector="body" scrollYTarget="0">Top</a>
+      <a class="left item" scrollTo href="#tokens">Session tokens</a>
+      <a class="left item" scrollTo href="#client-side">Client-side storage</a>
+      <a class="left item" scrollTo href="#server-side">Server-side authorization</a>
+      <a class="left item" scrollTo href="#code">Browse the Code</a>
+    </div>
   </div>
 </div>

@@ -1,6 +1,76 @@
-<div class="uk-grid">
-  <div class="uk-width-small-1-1 uk-width-large-3-4">
-  </div>
-  <div class="uk-width-large-1-4">
+<div class="ui container">
+  <div class="ui basic segment">
+		<p>In the last couple posts, we have gone over the basics of starting a mobile application with PhoneGap, the JavaScript-based cross-platform framework; namely, registration and logging in, authenticating with a session token, and navigation with Angular UI Router. All good things, and essentials for every Angular-created web application, but it's about time we dived into PhoneGap's extensive <a href="http://docs.phonegap.com/en/4.0.0/cordova_plugins_pluginapis.md.html#Plugin%20APIs">plugin	collection</a>.</p>
+    <p>In other words, let's finally start building a mobile app!</p>
+
+    <h2 class="ui header" id="contacts">Reading phone contacts with PhoneGap</h2>
+    <p>Let's take an easy example of a mobile app operation: reading a phone's contact list. OpenQollo gathers the phone numbers of users' phone contacts, then compares them to registered users' numbers so that users can see which of their friends are also registered on the app (similar to SnapChat). Fortunately, this is a very simple operation with the <a href="http://plugins.cordova.io/#/package/org.apache.cordova.contacts">Cordova contacts plugin</a>.</p>
+    <p>You can incorporate the contacts plugin to your app with one simple command:</p>
+
+    <div class="ui segment">
+      <pre><code highlight [language]="['shell']">alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.contacts</code></pre>
+    </div>
+
+    <p>And then simply access the plugin with <code>navigator.contacts</code>. The following example shows how to retrieve contact information in just a few quick lines:</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="contactService" [language]="['javascript']"></code></pre>
+    </div>
+
+    <h2 class="ui header" id="database">Using the Web SQL database</h2>
+    <p>Client-side HTML database support is a relatively new feature, but extremely useful, and increasingly plentiful. PhoneGap uses the <a href="http://www.w3.org/TR/webdatabase/">W3C Web SQL Database</a> specifications, which is basically a wrapper around <a href="http://www.sqlite.org/">SQLite</a>, but there are plenty of other options (among them). When making your selection, keep in mind that Web SQL is <a href="https://hacks.mozilla.org/2010/06/beyond-html5-database-apis-and-the-road-to-indexeddb/">technically deprecated</a>, but will probably enjoy support for the foreseeable future.</p>
+    <p>I use Web SQL here because it is the default client-side database supported by PhoneGap and because it is sufficiently similar to SQLite for even the most inexperienced database developer. First thing's first: how do you get a database connection?</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="webSql" [language]="['javascript']"></code></pre>
+    </div>
+
+    <p>Super simple stuff.</p>
+
+    <h3>Web SQL: <code>create</code> statement</h3>
+    <p>Okay, so we have a database connection. It's time to dive into the meat of the Web SQL syntax. If you know SQL, SQLite, or basically any other type of database query language, this will be elementary stuff. Fortunately, even for beginners it should be simple to pick up.</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="createTable" [language]="['javascript']"></code></pre>
+    </div>
+
+    <h3>Web SQL: <code>insert</code> statement</h3>
+    <p>Fantastic, we have our table. Now let's insert some data. For simplicity's state, we are simply going to insert the phone contacts data into our table (essentially replicating the default contact database that comes for free on your phone).</p>
+    <p>Now is a perfect time to talk about SQL injection. For those who are new to databases, SQL injection is a beautiful little trick by which an attacker inserts code which is executed in an SQL query, usually by cleverly manipulating a URL or other HTTP request. Fortunately, there is an easy way to protect against SQL injection known as "prepared statements" which allows you to safely wrap user inputs to protect against unwanted queries. Web SQL provides prepared statements with the <code>transaction.executeSql</code> function:</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="insertContacts" [language]="['javascript']"></code></pre>
+    </div>
+
+    <p>Note that you have two different types of <code>insert</code> statements to choose from:</p>
+    <ol class="ui list">
+      <li><code>insert</code> &mdash; fails to overwrite a record when a unique or primary key is matched</li>
+      <li><code>insert or replace into</code> &mdash; completely overwrites a record when a unique or primary key is matched</li>
+    </ol>
+    <p>See the <a href="http://sqlite.org/lang_conflict.html">SQLite documentation</a> for more.</p>
+
+    <h3>Web SQL: <code>select</code> statement</h3>
+    <p>How about retrieving records from the database? This one is a bit more complex. We will have to bring in our Angular JS once more: specifically, the <code>$q</code> service.</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="selectContacts" [language]="['javascript']"></code></pre>
+    </div>
+
+    <h2 class="ui header" id="code">Browse the code</h2>
+    <p>Want to see Cordova's contact plugin and Web SQL in action? Check out the OpenQollo code for today's post (and much more) at my <a href="https://github.com/alanbuttars/openqollo/tree/586c4fa4d028b81f477b6cf9586d328d0871b433">GitHub repository</a>.</p>
+	</div>
+</div>
+
+<div class="ui right rail">
+  <div class="ui sticky page navigation">
+   <div class="ui vertical fluid secondary left menu"> 
+      <div class="left item header">
+        Navigation
+      </div>
+      <a class="left item" scrollTo scrollableElementSelector="body" scrollYTarget="0">Top</a>
+      <a class="left item" scrollTo href="#contacts">Reading contacts</a>
+      <a class="left item" scrollTo href="#database">Using Web SQL</a>
+      <a class="left item" scrollTo href="#code">Browse the Code</a>
+    </div>
   </div>
 </div>

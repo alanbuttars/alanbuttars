@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+	<body>
+		<div>
+			<div ng-controller="TodoCtrl">
+				<h3>To Do</h3>
+				<button ng-click="load()">Reload</button>
+				<ul>
+					<li ng-repeat="task in tasks">
+						<span>{{task.name}}</span>
+						<button ng-click="update($index)">
+							Start
+						</button>
+					</li>
+				</ul>
+			</div>
+			<div ng-controller="InProgressCtrl">
+				<h3>In Progress</h3>
+				<button ng-click="load()">Reload</button>
+				<ul>
+					<li ng-repeat="task in tasks">
+						<span>{{task.name}}</span>
+						<button ng-click="update($index)">
+							Complete
+						</button>
+					</li>
+				</ul>
+			</div>
+			<div ng-controller="CompletedCtrl">
+				<h3>Completed</h3>
+				<button ng-click="load()">Reload</button>
+				<ul>
+					<li ng-repeat="task in tasks">
+						<span>{{task.name}}</span>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<script src="https://code.angularjs.org/1.3.5/angular.js"></script>
+		<script src="http://alanbuttars.com/docs/OpenQollo_5_controller.js"></script>
+		<script src="http://alanbuttars.com/docs/OpenQollo_5_model.js"></script>
+		<script type="text/javascript">
+			angular.bootstrap(document.body, ['demo']);
+		</script>
+	</body>
+</html>

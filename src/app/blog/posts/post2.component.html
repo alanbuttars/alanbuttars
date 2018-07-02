@@ -63,27 +63,6 @@
       </div>
     </sui-tabset>
 
-		<ul id="tab-register" class="uk-switcher">
-      <li>
-        <pre>
-          <code class="php"><?php echo escapeCode("/docs/OpenQollo_1_register_rest.txt"); ?>
-          </code>
-        </pre>
-      </li>
-      <li>
-        <pre>
-          <code class="php"><?php echo escapeCode("docs/OpenQollo_1_register_insert.txt"); ?>
-          </code>
-        </pre>
-      </li>
-      <li>
-        <pre>
-          <code class="php"><?php echo escapeCode("docs/OpenQollo_1_register_verify.txt"); ?>
-          </code>
-        </pre>
-      </li>
-    </ul>
-
 		<h3>Login</h3>
 		<p>Logging in via the PHP REST layer is even simpler, because most of our work has been done for us.</p>
     <ol class="ui list">
@@ -146,55 +125,36 @@ bower install jquery</code></pre>
       <li>View &mdash; front-end display of information (represented by the HTML template)</li>
       <li>Controller &mdash; mediator which transforms data from the model onto the view and actions on the view into actions on the model (represented by Angular JS <a href="https://docs.angularjs.org/api/ng/directive/ngController">controllers</a>)</li>
     </ol>
-    <p>Let's see it in action.</p>
 
-    <!-- Login client code samples -->
-    <ul class="uk-tab uk-margin-top" data-uk-tab="{connect: '#tab-mvc'}">
-      <li><a href="">index.html</a></li>
-      <li><a href="">login.html</a></li>
-      <li><a href="">app.js</a></li>
-      <li><a href="">controllers.js</a></li>
-      <li><a href="">services.js</a></li>
-    </ul>
-
-    <ul id="tab-mvc" class="uk-switcher">
-      <li>
-        <pre>
-          <code class="html"><?php echo escapeCode("/docs/OpenQollo_1_index.html"); ?>
-          </code>
-        </pre>
-      </li>
-      <li>
-        <pre>
-          <code class="html"><?php echo escapeCode("/docs/OpenQollo_1_login.html"); ?>
-          </code>
-        </pre>
-      </li>
-      <li>
-        <pre>
-          <code class="javascript"><?php echo escapeCode("docs/OpenQollo_1_app.js"); ?>
-          </code>
-        </pre>
-      </li>
-      <li>
-        <pre>
-          <code class="javascript"><?php echo escapeCode("docs/OpenQollo_1_controllers.js"); ?>
-          </code>
-        </pre>
-      </li>
-      <li>
-        <pre>
-          <code class="javascript"><?php echo escapeCode("docs/OpenQollo_1_services.js"); ?>
-          </code>
-        </pre>
-      </li>
-    </ul>
+    <sui-tabset #mvc_code>
+      <div class="ui pointing secondary menu">
+        <a class="item" suiTabHeader="1">index.html</a>
+        <a class="item" suiTabHeader="2">login.html</a>
+        <a class="item" suiTabHeader="3">app.js</a>
+        <a class="item" suiTabHeader="4">controllers.js</a>
+        <a class="item" suiTabHeader="5">services.js</a>
+      </div>
+      <div class="ui segment" suiTabContent="1">
+        <pre><code highlight [code]="mvcIndex" [language]="['html']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="2">
+        <pre><code highlight [code]="mvcLogin" [language]="['html']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="3">
+        <pre><code highlight [code]="mvcApp" [language]="['javascript']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="4">
+        <pre><code highlight [code]="mvcControllers" [language]="['javascript']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="5">
+        <pre><code highlight [code]="mvcServices" [language]="['javascript']"></code></pre>
+      </div>
+    </sui-tabset>
 
     <h2 class="ui header" id="code">Browse the code</h2>
-    <img class="uk-align-left" alt="OpenQollo login" src="assets/images/openqollo_1_login.gif" />
+    <img class="ui small left floated image" alt="OpenQollo login" src="assets/images/openqollo_1_login.gif" />
     <p>All right, I get it. You're tired of reading my ramblings. Check out this blog entry's code at my public
-    <a href="https://github.com/alanbuttars/openqollo/tree/40fc5aa1600804f4611b1df0c52d75ef200d27fd">GitHub repository</a>, and make sure to come back around
-    to view my future entries on OpenQollo.</p>
+    <a href="https://github.com/alanbuttars/openqollo/tree/40fc5aa1600804f4611b1df0c52d75ef200d27fd">GitHub repository</a>, and make sure to come back around to view my future entries on OpenQollo.</p>
     <p>Next week's lesson? Authenticating REST calls after logging in.</p>
   </div>
 </div>

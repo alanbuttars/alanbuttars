@@ -1,6 +1,46 @@
-<div class="uk-grid">
-  <div class="uk-width-small-1-1 uk-width-large-3-4">
-  </div>
-  <div class="uk-width-large-1-4">
+<div class="ui container">
+  <div class="ui basic segment">
+		<p>It's finally here! The final week of the OpenQollo tutorial. Over the last several weeks I've walked you through login and registration, session token authentication, the Angular UI Router library, and several PhoneGap/Cordova plugins. By now you should be well-versed enough in these topics to create your own PhoneGap application with Angular JS; but if you don't have any spectacular ideas yet, why not pick up one last group of skills in this week's installment?</p>
+		<p>This week, we'll put a finishing cap on last week's camera tutorial by showing you how to download remote files with the Cordova file transfer plugin. And just for fun, I'll also show you how to do a basic "scrolling notifications" page.</p>
+
+    <h2 class="ui header" id="server">Sending files over REST from server</h2>
+		<p>Downloading image files is typically done implicitly by your web browser via a <code>&lt;img src="x"&gt;</code> attribute, where "x" represents the URL of a hosted image. In an image-sharing app like OpenQollo, then, all you would need to do is allow users to write images to an upload directory, then store the paths to those images in a database so that other users could download via the <code>&lt;img src&gt;</code> attribute.
+		</p>
+
+		<p>This is dead simple, of course, but not a viable solution in many cases. For privacy reasons we don't want just anyone to be able to download sent images from our users, so we'll protect them using the authentication strategy we developed in Week 2. The following example shows how a user may request an image by its ID and download the file stream if they pass authentication.</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="download" [language]="php"></code></pre>
+    </div>
+
+		<p>This can be a bit difficult to test until you write up your client code, so I recommend using a REST client testing application, like Postman (<a href="https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm?hl=en">https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm?hl=en0</a>). When you have a stable version, move on to the next section.</p>
+
+		<h2 class="ui header" id="client">Receiving files over REST from server with Cordova's <code>FileTransfer</code></h2>
+		<p>See <a href="http://plugins.cordova.io/#/package/org.apache.cordova.file-transfer">http://plugins.cordova.io/#/package/org.apache.cordova.file-transfer</a></p>
+		<p>Last week, you were introduced to the Cordova <a href="http://plugins.cordova.io/#/package/org.apache.cordova.file-transfer">org.apache.cordova.file-transfer</a> plugin when I showed you how to upload files from a mobile device to a remote server. This week, I'll show you how OpenQollo supports downloading files from a remote server to the local mobile file system. If you haven't used the plugin before, add it to your PhoneGap project with the following commands:</p>
+
+    <div class="ui segment">
+      <pre><code highlight [language]="shell">alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.file
+alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.file-transfer</code></pre>
+    </div>
+
+		<p>The basis of the plugin is the <code>FileTransfer</code> object, which allows uploading and downloading from a remote path to a local URL.</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="transfer" [language]="javascript"></code></pre>
+		</div>
+	</div>
+</div>
+
+<div class="ui right rail">
+  <div class="ui sticky page navigation">
+   <div class="ui vertical fluid secondary left menu"> 
+      <div class="left item header">
+        Navigation
+      </div>
+      <a class="left item" scrollTo scrollableElementSelector="body" scrollYTarget="0">Top</a>
+      <a class="left item" scrollTo href="#server">Sending files from server</a>
+      <a class="left item" scrollTo href="#client">Receiving files on client</a>
+    </div>
   </div>
 </div>

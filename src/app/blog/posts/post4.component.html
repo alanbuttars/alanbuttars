@@ -1,6 +1,115 @@
-<div class="uk-grid">
-  <div class="uk-width-small-1-1 uk-width-large-3-4">
-  </div>
-  <div class="uk-width-large-1-4">
+<div class="ui container">
+  <div class="ui basic segment">
+    <h2 class="ui header">Modular HTML: The Old Way</h2>
+    <p>If you're anything like me, you probably like coconut cookies and vanilla wafers. You also probably learned to make your first websites very inefficiently, with plenty of copying and pasting (which kills kittens, by the way. Don't do it, even if they're overpopulated). But then someone saw you do it, judiciously cracked you over the head with a keyboard, and taught you how to modularize your HTML files. First, you separate your HTML into template files, then include them somehow.</p>
+    <p>In PHP, you can simply use the <code>include[_once]</code> or <code>require[_once]</code> functions to load them on the server side:</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="includePhp" [language]="['php']"></code></pre>
+    </div>
+
+    <p>Or in JavaScript, you can load them using JQuery's <code>.load(url[,data][,complete])</code> function to load them on the client side</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="includeJavascript" [language]="['html']"></code></pre>
+    </div>
+
+		<p>Even though this allows a ton of code reuse, there's still a couple problems with the approach:</p>
+    <ol class="ui list">
+    	<li>Each page needs the header and footer, so for each of those pages we will have to use the same PHP or JavaScript calls to include them. That's code reuse itself! Just a less evil form of it.</li>
+      <li>Every time a new page is requested, the user has to load the <strong>entire</strong> page, even if a great deal of that page (e.g., the header, footer, and CSS and JavaScript files) doesn't change from page to page. Not only does this involve longer page loads, but it also means that your users are downloading redundant data &mdash; not appreciated by mobile users.</li>
+    </ol>
+
+    <h2 class="ui header" id="ui-view">Angular UI Router: The <code>ui-view</code> attribute</h2>
+		<p>An alternate strategy is to truly modularize your HTML: separate your pages into code templates, then load only those templates that are necessary depending on the application's state. <a href="http://angular-ui.github.io/ui-router/site/#/api">Angular UI Router</a> emulates this strategy in a very simple and intuitive way, allowing you to achieve true code reuse (i.e., no redundant <code>include</code> statements) while minimizing the amount of code redundantly loaded by the user:</p>
+    <ol class="ui list">
+      <li>Create a single page application with view segments (e.g., a header and footer) common to all states as well as a "placeholder" (e.g., a content <code>&lt;div&gt;</code>) which will belong to the current state.</li>
+      <li>Create template files associated with the content <code>&lt;div&gt;</code> in 1. above (e.g., a <code>&lt;form&gt;</code> for logging in). Associate these template files with states of the application (e.g., a state named 'login').</li>
+      <li>On each state transition, load the associated template files into the placeholder.</li>
+    </ol>
+    <p>In the following example, your index.html page will be downloaded once and its contents will be used as the foundation for all states of the application. Take a look, and please note the <code>&lt;div ui-view&gt;</code> placeholder:</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="index" [language]="['html']"></code></pre>
+    </div>
+
+		<h2 class="ui header" id="state-provider">UI Router's <code>$stateProvider</code></h2>
+    <p>So how do we indicate what template should be inserted into the <code>&lt;div ui-view&gt;</code> placeholder? Look no further than Angular UI Router's <code>$stateProvider</code> service (documentation <a href="http://angular-ui.github.io/ui-router/site/#/api/ui.router.state.$stateProvider">here</a>), which allows you to preconfigure the various states of your application.</p>
+    <p>A <a href="http://angular-ui.github.io/ui-router/site/#/api/ui.router.state.$state">$state</a> is nothing more than a place-specific configuration object, typically including references to the controller and template to be used when the application is in a certain state, but having theoretically infinite config properties. These properties can be specified using the <code>module.config()</code> function (<a href="https://docs.angularjs.org/api/ng/function/angular.module">see the API</a>):</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="app" [language]="['javascript']"></code></pre>
+    </div>
+
+    <h2 class="ui header" id="nested-states">Nested states</h2>
+    <p>The above example should get you through a simple website, but more than likely you will need something a bit more complex. Let's say you have these requirements:</p>
+    <ol class="ui list">
+      <li>Every page has the same footer</li>
+      <li>A collection of pages (let's call them PageType1) have the same header</li>
+      <li>Another collection of pages (let's call them PageType2) have a different header</li>
+    </ol>
+    <p>That's a bit hard to visualize. Why not use OpenQollo as an example?</p>
+
+    <h3>PageType1 (in OpenQollo, named 'app')</h3>
+    <p>Notice the common header. The only difference is which link is highlighted, which can be easily manipulated with a bit of JavaScript.</p>
+
+    <div class="ui images">
+      <img src="assets/images/OpenQollo_3_notifications.png">
+      <img src="assets/images/OpenQollo_3_friends.png">
+    </div>
+
+    <h3>PageType2 (in OpenQollo, named 'menu')</h3>
+    <p>Notice the common header. The only difference is the icon and page title &mdash; both config properties which we can attach to the $state using <code>$stateProvider</code>.</p>
+    <div class="ui images">
+      <img src="assets/images/OpenQollo_3_profile.png">
+      <img src="assets/images/OpenQollo_3_account.png">
+      <img src="assets/images/OpenQollo_3_info.png">
+    </div>
+
+    <p>What we really want is some kind of parent-child relationship between states to maximize our code reuse. If you have object-oriented programming experience, such as with Java or Ruby, it helps to think of these parent states as abstract classes and child states as extensions of those states. Quite simply, we want the ability to structure our pages in a simple tree-like fashion:</p>
+    <pre>
+index
+|---- app
+|      |---- notifications
+|      |---- friends
+|
+|---- menu
+       |---- profile
+       |---- account
+       |---- info
+    </pre>
+    <p>We group these page types in pretty much the exact same way we would in a non-nested state. We just have to get a bit more fancy in the app configuration. Through dot notation in the $stateProvider we can specify parent-child relationships between templates:</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="appNested" [language]="['javascript']"></code></pre>
+    </div>
+
+    <p>Then, in addition to the index.html above, we allow the app.html and menu.html templates to define their own <code>&lt;div ui-view&gt;</code> placeholders:</p>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="appHtml" [language]="['html']"></code></pre>
+    </div>
+
+    <div class="ui segment">
+      <pre><code highlight [code]="menu" [language]="['html']"></code></pre>
+    </div>
+
+		<h2 class="ui header" id="code">Browse the code</h2>
+		<p>If you're confused, don't worry. Angular UI Router is a complicated API to work with, and you'll drown in the <a href="https://github.com/angular-ui/ui-router/wiki/Nested-States-%26-Nested-Views">documentation</a> if you don't have practical	examples to look at. Fortunately, that's where I come in. For a full-fledged example of UI Router in action, check out the <a href="https://github.com/alanbuttars/openqollo/tree/823ff0babe596bd6072ef20708d94f857331ed5b">OpenQollo repository</a> on GitHub. As always, feel free to <a routerLink="/contact">contact</a> me if you have questions.</p>
+	</div>
+</div>
+
+<div class="ui right rail">
+  <div class="ui sticky page navigation">
+    <div class="ui vertical fluid secondary left menu"> 
+      <div class="left item header">
+        Navigation
+      </div>
+      <a class="left item" scrollTo scrollableElementSelector="body" scrollYTarget="0">Top</a>
+      <a class="left item" scrollTo href="#ui-view">ui-view</a>
+      <a class="left item" scrollTo href="#state-provider">$stateProvider</a>
+      <a class="left item" scrollTo href="#nested-states">Nested states</a>
+      <a class="left item" scrollTo href="#code">Browse the Code</a>
+    </div>
   </div>
 </div>

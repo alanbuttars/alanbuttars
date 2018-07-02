@@ -1,22 +1,38 @@
 import { Component }      from '@angular/core';
-
-declare var $: any;
+import { ContactService } from './contact.service';
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html'
 })
 export class ContactComponent {
+  
+  model = {};
+  state = null;
+  errorMessage = null;
+
   constructor(
+    private contactService: ContactService
   ) { }
 
-  ngAfterViewInit() {
-    console.log("TRYING");
-    console.log($(".ui.sticky.page.navigation"));
-    console.log($(".ui.sticky.blog.navigation"));
+  onSubmit() {
+    this.state = 'loading';
+    this.errorMessage = null;
 
-    $(".ui.sticky").sticky({
-    context: "#blog",
-    });
+    this.contactService.send(this.model)
+      .subscribe(
+      //results => {
+      //    console.log("====");
+      //    console.log(results);
+      //    console.log("====");
+      //}
+        (data: any) => {
+         this.state = 'success';
+        },
+        error => {
+          this.state = 'error';
+          this.errorMessage = error;
+        }
+    );
   }
 }

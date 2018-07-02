@@ -1,6 +1,83 @@
-<div class="uk-grid">
-  <div class="uk-width-small-1-1 uk-width-large-3-4">
+<div class="ui container">
+  <div class="ui basic segment">
+		<p>At this stage, we have discussed creating a PhoneGap application, performing registration and login, using session tokens, and even reading contacts from a mobile device. All good things to create our photo-sharing application, but nothing that has really shown off the friendliness of Angular JS.</p>
+		<p>If you check out the new OpenQollo code for this week, you'll notice a large amount of new code for making and responding to friend requests, but none of this is particularly interesting if you want to learn PhoneGap or Angular JS. Therefore, in lieu of my usual self-indulgent discussion on OpenQollo, this week I will give a brief introduction into the MVC framework and how Angular JS handles it. Let's get to it.</p>
+
+    <div class="ui grid">
+      <div class="two column row">
+        <div class="column">
+          <h2 class="ui header" id="demo">The Demo</h2>
+
+          <p>Let's say you wanted to create a simple shopping list app. You want to have three pages to the app, showing "to do", "in progress", and "completed" tasks. Here are some very basic requirements:</p>
+          <ol class="ui list">
+            <li>Each page must load tasks from a data source and display them</li>
+            <li>Tasks that are "to do" must be able to be advanced to "in progress"</li>
+            <li>Tasks that are "in progress" must be able to be advanced to "completed"</li>
+          </ol>
+          
+          <p>You'll notice that most of the logic across each page is similar:</p>
+          <ul class="ui list">
+            <li>Each page requires a call to a data source for similar data</li>
+            <li>Each page should be able to refresh to bring in fresh data</li>
+            <li>The "to do" and "in progress" pages both require the ability to update a task's status</li>
+          </ul>
+        </div>
+
+        <div class="column">
+          <div class="ui segment">
+            <iframe src="assets/OpenQollo_5_view.html" width="100%" height="500px">
+              <p>Your browser does not support iframes.</p>
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+
+		<h2 class="ui header" id="model">Model</h2>
+		<p>Let's start with the simplest component of MVC: the Model. In web applications, the model is almost always some kind of data source, like a database. Angular generally recommends that the model be accessed and manipulated through <code>services</code> (see <a href="https://docs.angularjs.org/guide/services">https://docs.angularjs.org/guide/services</a> for more details). In the below example, <code>TaskService</code> represents the model, where the only data of concern is an <code>Array</code> of tasks. Depending on the state of the application, a subarray of these tasks would	be retrieved based on their type.</p>
+
+		<h2 class="ui header" id="controller">Controller</h2>
+    <p>The responsibility of the controller is to define business logic. Simplicity is key here; delegate significant logic to services. Angular provides excellent documentation about how to use controllers effectively (see <a href="https://docs.angularjs.org/guide/controller">https://docs.angularjs.org/guide/controller</a>).</p>
+
+		<h2 class="ui header" id="view">View</h2>
+    <p>Binding your Angular code to the view is simple. In your <code>index.html</code> file:</p>
+    <ol class="ui list">
+      <li>Import AngularJS</li>
+      <li>Import your controller code</li>
+      <li>Import your model code</li>
+      <li>Bootstrap your code using <a href="https://docs.angularjs.org/api/ng/function/angular.bootstrap">angular.bootstrap</a></li>
+    </ol>
+
+    <sui-tabset #code>
+      <div class="ui pointing secondary menu">
+        <a class="item" suiTabHeader="1">controller.js</a>
+        <a class="item" suiTabHeader="2">model.js</a>
+        <a class="item" suiTabHeader="3">index.html</a>
+      </div>
+      <div class="ui segment" suiTabContent="1">
+        <pre><code highlight [code]="controller" [language]="javascript"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="2">
+        <pre><code highlight [code]="model" [language]="javascript"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="3">
+        <pre><code highlight [code]="view" [language]="html"></code></pre>
+      </div>
+    </sui-tabset>
   </div>
-  <div class="uk-width-large-1-4">
+</div>
+
+<div class="ui right rail">
+  <div class="ui sticky page navigation">
+   <div class="ui vertical fluid secondary left menu"> 
+      <div class="left item header">
+        Navigation
+      </div>
+      <a class="left item" scrollTo scrollableElementSelector="body" scrollYTarget="0">Top</a>
+      <a class="left item" scrollTo href="#demo">Demo</a>
+      <a class="left item" scrollTo href="#model">Model</a>
+      <a class="left item" scrollTo href="#controller">Controller</a>
+      <a class="left item" scrollTo href="#view">View</a>
+    </div>
   </div>
 </div>

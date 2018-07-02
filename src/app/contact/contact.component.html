@@ -1,65 +1,39 @@
-<div class="ui container">
-  <div class="ui segment" id="blog">
-    <div class="left ui rail">
-      <div class="ui sticky" style="width: 272px !important; height: 262.531px !important; left: 238px;">
-        <h3>LEFT RAIL</h3>
-        <img>
+<div class="ui grid">
+  <div class="one column row">
+    <div class="column">
+      <div class="ui container">
+        <h1 class="ui horizontal divider header">Contact me</h1>
+        <p>Have a question or comment? Give me a buzz and I'll get back to you as soon as I can.</p>
+
+        <form class="ui form {{state}}" (ngSubmit)="onSubmit()" #contactForm="ngForm">
+          <div class="ui success message">
+            <div class="header">Thank you</div>
+            <p>I will get back to you soon.</p>
+          </div>
+
+          <div class="ui error message">
+            <div class="header">Error</div>
+            <p>{{errorMessage}}</p>
+          </div>
+
+          <div class="eight wide field required">
+            <label>Name</label>
+            <input type="text" name="name" placeholder="John Doe" required [(ngModel)]="model.name" #name="ngModel"/>
+          </div>
+
+          <div class="eight wide field required">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="john.doe@example.org" required [(ngModel)]="model.email" #email="ngModel" />
+          </div>
+
+          <div class="eight wide field required">
+            <label>Comments</label>
+            <textarea rows="4" name="comments" placeholder="john.doe@example.org" required [(ngModel)]="model.comments" #comments="ngModel"></textarea>
+          </div>
+
+          <button class="ui button" type="submit" [disabled]="!contactForm.form.valid">Submit</button>
+        </form>
       </div>
     </div>
-
-    <div class="right ui rail">
-      <div class="ui sticky">
-        <h3>RIGHT RAIL</h3>
-        <img>
-      </div>
-    </div>
-
-
-    <h1 class="ui horizontal divider header">Welcome</h1>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
-    <p>Here</p>
   </div>
 </div>
-
