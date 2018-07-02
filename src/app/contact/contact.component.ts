@@ -21,11 +21,6 @@ export class ContactComponent {
 
     this.contactService.send(this.model)
       .subscribe(
-      //results => {
-      //    console.log("====");
-      //    console.log(results);
-      //    console.log("====");
-      //}
         (data: any) => {
          this.state = 'success';
         },
