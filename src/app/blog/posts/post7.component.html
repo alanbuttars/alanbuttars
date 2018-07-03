@@ -20,13 +20,13 @@
         <a class="item" suiTabHeader="3">model.js</a>
       </div>
       <div class="ui segment" suiTabContent="1">
-        <pre><code highlight [code]="cameraView" [language]="html"></code></pre>
+        <pre><code highlight [code]="cameraView" [language]="['html']"></code></pre>
       </div>
       <div class="ui segment" suiTabContent="2">
-        <pre><code highlight [code]="cameraController" [language]="javascript"></code></pre>
+        <pre><code highlight [code]="cameraController" [language]="['javascript']"></code></pre>
       </div>
       <div class="ui segment" suiTabContent="3">
-        <pre><code highlight [code]="cameraModel" [language]="javascript"></code></pre>
+        <pre><code highlight [code]="cameraModel" [language]="['javascript']"></code></pre>
       </div>
     </sui-tabset>
 
@@ -35,21 +35,21 @@
 		<p>Accessing the camera and photo library is all well and good, but what do we do with the image once we have a handle on it? OpenQollo is a photo-sharing app, so we need the ability to upload an image from a user's device to the host server. Enter the <code>org.apache.cordova.file-transfer</code> plugin, along with it's dependency, <code>org.apache.cordova.file</code>. Let's add them to our application.</p>
 
     <div class="ui segment">
-      <pre><code highlight [language]="shell">alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.file
+      <pre><code highlight [language]="['shell']">alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.file
 alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.file-transfer</code></pre>
     </div>
 
 		<p>While <code>org.apache.cordova.file</code> is useful for accessing and writing files on the client side, we are more interested in the <code>org.apache.cordova.file-transfer</code>'s very extensible <code>FileTransfer</code> object. All that is required is to specify a source, a destination, and a handful of options. Again, I'll bow to the superiority of Cordova's documentation, but the below example should help you get started.</p>
 
     <div class="ui segment">
-      <pre><code highlight [code]="sendImage" [language]="javascript"></code></pre>
+      <pre><code highlight [code]="sendImage" [language]="['javascript']"></code></pre>
     </div>
 
 		<h2 class="ui header" id="process">Processing files on the server</h2>
 		<p>Boom, it's just that easy on the client side. Now let's dive into a bit of the server side. How do we process the file sent via Cordova's <code>FileTransfer</code> object? There are more than enough examples online in your chosen server-side language, but if you're using PHP, you can start with the below code:</p>
 
     <div class="ui segment">
-      <pre><code highlight [code]="uploadImage" [language]="php"></code></pre>
+      <pre><code highlight [code]="uploadImage" [language]="['php']"></code></pre>
     </div>
 
 		<p>From here you can do anything you like with the uploaded image. You can it in a database, store it to a file system, or even manipulate the file streams themselves to create thumbnails. In OpenQollo, we simply store these images in a database blob for later retrieval.</p>
@@ -66,7 +66,7 @@ alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.file-transfer</
 		<p><strong>Edit.</strong><br/>You may prefer instead to send your files to an FTP server, rather than a REST endpoint. For that, you'll want to use the <code>cordova-plugin-ftp</code>, available at <a href="https://github.com/xfally/cordova-plugin-ftp">https://github.com/xfally/cordova-plugin-ftp</a>:</p>
 
     <div class="ui segment">
-      <pre><code highlight [language]="shell">alan@buttars ~/openqollo $ cordova plugin add cordova-plugin-ftp
+      <pre><code highlight [language]="['shell']">alan@buttars ~/openqollo $ cordova plugin add cordova-plugin-ftp
 alan@buttars ~/openqollo $ cordova prepare</code></pre>
 		</div>
 	</div>

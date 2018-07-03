@@ -10,7 +10,7 @@
 		<p>This is dead simple, of course, but not a viable solution in many cases. For privacy reasons we don't want just anyone to be able to download sent images from our users, so we'll protect them using the authentication strategy we developed in Week 2. The following example shows how a user may request an image by its ID and download the file stream if they pass authentication.</p>
 
     <div class="ui segment">
-      <pre><code highlight [code]="download" [language]="php"></code></pre>
+      <pre><code highlight [code]="download" [language]="['php']"></code></pre>
     </div>
 
 		<p>This can be a bit difficult to test until you write up your client code, so I recommend using a REST client testing application, like Postman (<a href="https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm?hl=en">https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm?hl=en0</a>). When you have a stable version, move on to the next section.</p>
@@ -20,14 +20,14 @@
 		<p>Last week, you were introduced to the Cordova <a href="http://plugins.cordova.io/#/package/org.apache.cordova.file-transfer">org.apache.cordova.file-transfer</a> plugin when I showed you how to upload files from a mobile device to a remote server. This week, I'll show you how OpenQollo supports downloading files from a remote server to the local mobile file system. If you haven't used the plugin before, add it to your PhoneGap project with the following commands:</p>
 
     <div class="ui segment">
-      <pre><code highlight [language]="shell">alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.file
+      <pre><code highlight [language]="['shell']">alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.file
 alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.file-transfer</code></pre>
     </div>
 
 		<p>The basis of the plugin is the <code>FileTransfer</code> object, which allows uploading and downloading from a remote path to a local URL.</p>
 
     <div class="ui segment">
-      <pre><code highlight [code]="transfer" [language]="javascript"></code></pre>
+      <pre><code highlight [code]="transfer" [language]="['javascript']"></code></pre>
 		</div>
 	</div>
 </div>

@@ -46,14 +46,14 @@
     <p>Let's take this from the beginning. In last week's lesson, after logging in successfully, the PHP REST code would return the user's ID. But with some tweaking, we can instead return a pair of public and private tokens (see the <a href="#downloads">downloads</a> to see how these tokens are generated and stored). These tokens will be used for every subsequent REST call, so we need to store them on the client somehow. Why not use the <a href="http://diveintohtml5.info/storage.html">HTML5 web storage API</a>?</p>
 
     <div class="ui segment">
-      <pre><code highlight [code]="loginController" [language]="javascript"></code></pre>
+      <pre><code highlight [code]="loginController" [language]="['javascript']"></code></pre>
     </div>
 
     <h3>Sending the tokens: Angular JS Interceptors</h3>
     <p>We need to send the public token, hash, and timestamp for every HTTP request. Angular JS makes this easy with <a href="https://docs.angularjs.org/api/ng/service/$http">interceptors</a>. All we have to do is register an interceptor which adds a couple headers to every request, and we are good to go. To generate the hash, we will use the excellent <a href="http://code.google.com/p/crypto-js/">Crypto-JS library</a>.</p>
 
     <div class="ui segment">
-      <pre><code highlight [code]="interceptor" [language]="javascript"></code></pre>
+      <pre><code highlight [code]="interceptor" [language]="['javascript']"></code></pre>
     </div>
 
     <h2 class="ui header" id="server-side">Authorizing the tokens: PHP REST filter</h2>
@@ -68,7 +68,7 @@
 		<p>Okay, okay, it's not that bad. Just keep in mind that the sent timestamp should be a UTC timestamp, so you need to compare it with a UTC timestamp. Unless you for some ungodly reason can't figure out how to get a simple UTC timestamp in PHP, in which case you'll overcomplicate it and convert both timestamps to GMT:</p>
 
     <div class="ui segment">
-      <pre><code highlight [code]="authenticateRest" [language]="php"></code></pre>
+      <pre><code highlight [code]="authenticateRest" [language]="['php']"></code></pre>
     </div>
 
     <h2 class="ui header" id="code">Check out the source</h2>

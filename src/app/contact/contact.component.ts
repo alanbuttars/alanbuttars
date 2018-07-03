@@ -7,7 +7,11 @@ import { ContactService } from './contact.service';
 })
 export class ContactComponent {
   
-  model = {};
+  model = {
+    name: null,
+    email: null,
+    comments: null,
+  };
   state = null;
   errorMessage = null;
 
