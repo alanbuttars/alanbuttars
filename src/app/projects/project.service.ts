@@ -39,7 +39,7 @@ export const PROJECTS = [
     squareImage: "assets/images/openqollo-square.png",
     startYear: "Dec 2014",
     endYear: "May 2015",
-    url: null,
+    url: "blog",
     icons: [
       {
         url: "https://github.com/alanbuttars/openqollo",

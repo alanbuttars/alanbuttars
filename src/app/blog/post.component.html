@@ -1,6 +1,6 @@
 <ng-container *ngIf="post">
   <div class="ui grid">
-    <div class="sixteen wide column computer tablet only">
+    <div class="sixteen wide column computer only">
       <div class="ui one cards">
         <div class="ui card">
           <div class="ui fluid image">
@@ -23,19 +23,42 @@
       </div>
     </div>
 
-    <div class="sixteen wide column mobile only">
+    <div class="sixteen wide column tablet only">
       <div class="ui one cards">
         <div class="ui card">
           <div class="ui fluid image">
             <div class="ui black ribbon label big">
               {{post.title}}
             </div>
+            <div class="image">
+              <img src="{{post.largeImage}}" alt="{{post.title}}" />
+            </div>
+          </div>
+          <div class="content">
+            <div class="meta">
+              <span class="date">{{post.date | date: 'longDate'}}</span>
+            </div>
+            <div class="description">
+              {{post.description}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sixteen wide column mobile only">
+      <div class="ui one cards">
+        <div class="ui card">
+          <div class="ui fluid image">
             <a class="image" routerLink="/blog/{{post.id}}">
               <img src="{{post.squareImage}}" alt="{{post.title}}" />
             </a>
           </div>
           <div class="content">
             <div class="header">
+              {{post.title}}
+            </div>
+            <div class="description">
               {{post.description}}
             </div>
             <div class="meta">

@@ -32,7 +32,8 @@ export class BlogComponent implements OnInit {
 
   ngAfterViewInit() {
     $(".ui.sticky.blog.navigation").sticky({
-      context: "#blog"
+      context: "#blog",
+      observeChanges: true
     });
   }
 }

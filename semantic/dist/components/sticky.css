@@ -18,6 +18,7 @@
   -webkit-transition: none;
   transition: none;
   z-index: 800;
+  margin-bottom: 1rem !important;
 }
 
 

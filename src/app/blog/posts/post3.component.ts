@@ -169,7 +169,7 @@ else {
   $userId = $authResult['success']['userId'];
 }
 
-// continue with your REST logic`;
+// continue with your REST logic;
 
 }`;
 

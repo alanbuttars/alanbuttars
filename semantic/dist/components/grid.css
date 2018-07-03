@@ -98,6 +98,13 @@
   padding: 0rem;
   padding-top: 1rem;
   padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+.ui.grid > .row.no-padding-bottom {
+  padding-bottom: 0;
+}
+.ui.grid > .row.no-margin-bottom {
+  margin-bottom: 0;
 }
 
 /*-------------------

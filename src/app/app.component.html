@@ -1,15 +1,15 @@
 <!-- Computer and Tablet only -->
 <div class="ui grid">
-  <div class="one column row computer tablet only">
+  <div class="one column row computer tablet only no-margin-bottom no-padding-bottom">
     <div class="column">
       <div class="ui top attached menu">
-        <div class="item">
-          <img src="assets/images/icon_32.png" />
-        </div>
+        <!-- <div class="item"> -->
+        <!--   <img src="assets/images/icon_32.png" /> -->
+        <!-- </div> -->
 
-        <a class="item" routerLink="/home">Home</a>
-        <a class="item" routerLink="/blog">Blog</a>
-        <a class="item" routerLink="/contact">Contact</a>
+        <a class="item" routerLink="/home" routerLinkActive="active">Home</a>
+        <a class="item" routerLink="/blog" routerLinkActive="active">Blog</a>
+        <a class="item" routerLink="/contact" routerLinkActive="active">Contact</a>
 
         <div class="right menu">
           <a class="item" href="https://twitter.com/alanbuttars" target="_blank">
@@ -27,7 +27,7 @@
   </div>
 
   <!-- Mobile only -->
-  <div class="one column row mobile only">
+  <div class="one column row mobile only no-margin-bottom no-padding-bottom">
     <div class="column">
       <div class="ui top attached menu">
         <a class="item" (click)="sidebar.toggle()">
@@ -42,26 +42,23 @@
   </div>
 </div>
 
-<div class="ui grid">
+<div class="ui grid" style="margin-top: 0">
   <div class="one column row">
     <div class="column">
       <sui-sidebar-container class="ui bottom attached">
         <sui-sidebar class="inverted vertical" #sidebar>
-          <a class="item">
-            <img src="assets/images/icon_32.png" />
-          </a>
-          <a class="item" routerLink="/home">Home</a>
-          <a class="item" routerLink="/blog">Blog</a>
-          <a class="item" routerLink="/contact">Contact</a>
+          <a class="item" routerLink="/home" routerLinkActive="active">Home</a>
+          <a class="item" routerLink="/blog" routerLinkActive="active">Blog</a>
+          <a class="item" routerLink="/contact" routerLinkActive="active">Contact</a>
 
           <a class="item" href="https://twitter.com/alanbuttars" target="_blank">
-            <i class="twitter icon"></i>
+            Twitter <i class="twitter icon"></i>
           </a>
           <a class="item" href="https://www.linkedin.com/in/alan-buttars-462b2b70/" target="_blank">
-            <i class="linkedin icon"></i>
+            LinkedIn <i class="linkedin icon"></i>
           </a>
           <a class="item" href="https://github.com/alanbuttars" target="_blank">
-            <i class="github icon"></i>
+            GitHub <i class="github icon"></i>
           </a>
         </sui-sidebar>
 
@@ -72,6 +69,8 @@
     </div>
   </div>
 </div>
+
+<div class="ui divider"></div>
 
 <div class="ui grid">
   <div class="one column row">

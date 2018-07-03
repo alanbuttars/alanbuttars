@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -8,7 +8,16 @@ export class ContactService {
   constructor(private http: HttpClient) {}
 
   send(model: any): Observable<{}> {
-    return this.http.post<{}>("https://example.com", model)
+    var httpOptions = {
+      headers: new HttpHeaders({}),
+      params: new HttpParams()
+        .set("name", model.name)
+        .set("email", model.email)
+        .set("comments", model.comments)
+    }
+
+    return this.http.get("https://4w3dv080h6.execute-api.us-west-2.amazonaws.com/production/contact", httpOptions)
+    // return this.http.get("https://lambdas.alanbuttars.com/contact", httpOptions)
       .pipe(catchError(this.handleError));
   }
 
