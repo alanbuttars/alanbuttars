@@ -23,6 +23,7 @@ import { BlogSummaryComponent } from './blog/summary.component';
 import { ContactComponent } from './contact/contact.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
+import { ProjectComponent } from './projects/project.component';
 
 import { BlogService }   from './blog/blog.service';
 import { ContactService }   from './contact/contact.service';
@@ -45,6 +46,7 @@ import { ProjectService }   from './projects/project.service';
     ContactComponent,
     HeaderComponent,
     HomeComponent,
+    ProjectComponent,
   ],
   imports: [
     AppRoutingModule,
