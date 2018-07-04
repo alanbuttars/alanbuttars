@@ -29,6 +29,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Deploy
 
 ```shell
-ng build --prod --base-href "https://alanbuttars.github.io/alanbuttars.com"
-angular-cli-ghpages --dir dist/alanbuttars.com
+ng build --prod --base-href "https://alanbuttars.com"
+angular-cli-ghpages --dir dist/alanbuttars
 ```
