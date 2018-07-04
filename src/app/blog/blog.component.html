@@ -1,44 +1,48 @@
 <div class="ui container">
   <div class="ui basic segment">
-    <div class="ui left rail computer only">
-      <div class="ui sticky blog navigation">
-        <sui-tabset>
-          <div class="ui pointing secondary menu">
-            <a class="item" suiTabHeader="1">Recent</a>
-            <a class="item" suiTabHeader="2">Featured</a>
-          </div>
-          <div class="ui basic" suiTabContent="1">
-            <a class="ui card" *ngFor="let post of recentPosts" routerLink="/blog/{{post.id}}" routerLinkActive="green">
-              <div class="content">
-                <div class="header">
-                  <h4>{{post.title}}</h4>
-                </div>
-                <div class="meta">
-                  <span class="date">{{post.date | date: 'longDate'}}</span>
-                </div>
-                <div class="description">
-                  {{post.description}}
-                </div>
+    <div class="ui left rail">
+      <div class="ui grid">
+        <div class="sixteen wide column computer only">
+          <div class="ui sticky blog navigation">
+            <sui-tabset>
+              <div class="ui pointing secondary menu">
+                <a class="item" suiTabHeader="1">Recent</a>
+                <a class="item" suiTabHeader="2">Featured</a>
               </div>
-            </a>
-          </div>
+              <div class="ui basic" suiTabContent="1">
+                <a class="ui card" *ngFor="let post of recentPosts" routerLink="/blog/{{post.id}}" routerLinkActive="green">
+                  <div class="content">
+                    <div class="header">
+                      <h4>{{post.title}}</h4>
+                    </div>
+                    <div class="meta">
+                      <span class="date">{{post.date | date: 'longDate'}}</span>
+                    </div>
+                    <div class="description">
+                      {{post.description}}
+                    </div>
+                  </div>
+                </a>
+              </div>
 
-          <div class="ui basic" suiTabContent="2">
-            <a class="ui card" *ngFor="let post of featuredPosts" routerLink="/blog/{{post.id}}" routerLinkActive="green">
-              <div class="content">
-                <div class="header">
-                  <h4>{{post.title}}</h4>
-                </div>
-                <div class="meta">
-                  <span class="date">{{post.date | date: 'longDate'}}</span>
-                </div>
-                <div class="description">
-                  {{post.description}}
-                </div>
+              <div class="ui basic" suiTabContent="2">
+                <a class="ui card" *ngFor="let post of featuredPosts" routerLink="/blog/{{post.id}}" routerLinkActive="green">
+                  <div class="content">
+                    <div class="header">
+                      <h4>{{post.title}}</h4>
+                    </div>
+                    <div class="meta">
+                      <span class="date">{{post.date | date: 'longDate'}}</span>
+                    </div>
+                    <div class="description">
+                      {{post.description}}
+                    </div>
+                  </div>
+                </a>
               </div>
-            </a>
+            </sui-tabset>
           </div>
-        </sui-tabset>
+        </div>
       </div>
     </div>
 
