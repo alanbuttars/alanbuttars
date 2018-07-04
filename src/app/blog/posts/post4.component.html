@@ -5,12 +5,14 @@
     <p>In PHP, you can simply use the <code>include[_once]</code> or <code>require[_once]</code> functions to load them on the server side:</p>
 
     <div class="ui segment">
+      <div class="ui attached top label">index.php</div>
       <pre><code highlight [code]="includePhp" [language]="['php']"></code></pre>
     </div>
 
     <p>Or in JavaScript, you can load them using JQuery's <code>.load(url[,data][,complete])</code> function to load them on the client side</p>
 
     <div class="ui segment">
+      <div class="ui attached top label">index.html</div>
       <pre><code highlight [code]="includeJavascript" [language]="['html']"></code></pre>
     </div>
 
@@ -30,6 +32,7 @@
     <p>In the following example, your index.html page will be downloaded once and its contents will be used as the foundation for all states of the application. Take a look, and please note the <code>&lt;div ui-view&gt;</code> placeholder:</p>
 
     <div class="ui segment">
+      <div class="ui attached top label">index.html</div>
       <pre><code highlight [code]="index" [language]="['html']"></code></pre>
     </div>
 
@@ -38,6 +41,7 @@
     <p>A <a href="http://angular-ui.github.io/ui-router/site/#/api/ui.router.state.$state">$state</a> is nothing more than a place-specific configuration object, typically including references to the controller and template to be used when the application is in a certain state, but having theoretically infinite config properties. These properties can be specified using the <code>module.config()</code> function (<a href="https://docs.angularjs.org/api/ng/function/angular.module">see the API</a>):</p>
 
     <div class="ui segment">
+      <div class="ui attached top label">app.js</div>
       <pre><code highlight [code]="app" [language]="['javascript']"></code></pre>
     </div>
 
@@ -67,8 +71,8 @@
     </div>
 
     <p>What we really want is some kind of parent-child relationship between states to maximize our code reuse. If you have object-oriented programming experience, such as with Java or Ruby, it helps to think of these parent states as abstract classes and child states as extensions of those states. Quite simply, we want the ability to structure our pages in a simple tree-like fashion:</p>
-    <pre>
-index
+    <div class="ui segment">
+      <pre>index
 |---- app
 |      |---- notifications
 |      |---- friends
@@ -76,21 +80,25 @@ index
 |---- menu
        |---- profile
        |---- account
-       |---- info
-    </pre>
+       |---- info</pre>
+    </div>
+
     <p>We group these page types in pretty much the exact same way we would in a non-nested state. We just have to get a bit more fancy in the app configuration. Through dot notation in the $stateProvider we can specify parent-child relationships between templates:</p>
 
     <div class="ui segment">
+      <div class="ui attached top label">app.js</div>
       <pre><code highlight [code]="appNested" [language]="['javascript']"></code></pre>
     </div>
 
     <p>Then, in addition to the index.html above, we allow the app.html and menu.html templates to define their own <code>&lt;div ui-view&gt;</code> placeholders:</p>
 
     <div class="ui segment">
+      <div class="ui attached top label">app.html</div>
       <pre><code highlight [code]="appHtml" [language]="['html']"></code></pre>
     </div>
 
     <div class="ui segment">
+      <div class="ui attached top label">menu.html</div>
       <pre><code highlight [code]="menu" [language]="['html']"></code></pre>
     </div>
 

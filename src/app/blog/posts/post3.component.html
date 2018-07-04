@@ -46,6 +46,7 @@
     <p>Let's take this from the beginning. In last week's lesson, after logging in successfully, the PHP REST code would return the user's ID. But with some tweaking, we can instead return a pair of public and private tokens (see the <a href="#downloads">downloads</a> to see how these tokens are generated and stored). These tokens will be used for every subsequent REST call, so we need to store them on the client somehow. Why not use the <a href="http://diveintohtml5.info/storage.html">HTML5 web storage API</a>?</p>
 
     <div class="ui segment">
+      <div class="ui attached top label">controllers.js</div>
       <pre><code highlight [code]="loginController" [language]="['javascript']"></code></pre>
     </div>
 
@@ -53,6 +54,7 @@
     <p>We need to send the public token, hash, and timestamp for every HTTP request. Angular JS makes this easy with <a href="https://docs.angularjs.org/api/ng/service/$http">interceptors</a>. All we have to do is register an interceptor which adds a couple headers to every request, and we are good to go. To generate the hash, we will use the excellent <a href="http://code.google.com/p/crypto-js/">Crypto-JS library</a>.</p>
 
     <div class="ui segment">
+      <div class="ui attached top label">interceptors.js</div>
       <pre><code highlight [code]="interceptor" [language]="['javascript']"></code></pre>
     </div>
 

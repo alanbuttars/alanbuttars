@@ -166,7 +166,7 @@ public class Ruzzle {
    *         dictionary (e.g., calling this method with searchWord of "carro"
    *         would return because "carrot" is in the dictionary)
    *         
-   *		   false if the word, even once completed, could not
+   *         false if the word, even once completed, could not
    *         occur in the dictionary (e.g., calling this method with
    *         searchWord of "carrotsa" would return false because
    *         no word exists which starts with "carrotsa")

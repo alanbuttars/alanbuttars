@@ -38,8 +38,8 @@
 
     <p>Really, the programming solution to Ruzzle™ isn't to look for words, but to blindly and methodically go down every possible path of grid positions and test if the word representing that path exists in a word dictionary. A pseudo-code solution might look like this.</p>
 
-    <pre>
-function search():
+    <div class="ui segment">
+      <pre>function search():
   for every position in grid:
     wordSoFar := character at position
     searchHelper(position, wordSoFar)
@@ -49,8 +49,8 @@ function searchHelper(position, wordSoFar):
     wordSoFar := wordSoFar + character at neighbor
     searchHelper(neighbor, wordSoFar)
   if wordSoFar is in dictionary:
-    add wordSoFar to foundWords      
-    </pre>
+    add wordSoFar to foundWords</pre>
+    </div>
 
     <p>Do you smell that, Neurotic Nate? That's the smell of fear, which you haven't smelled since we cleaned the fridge after winter break of 2013.</p>
 
@@ -58,8 +58,8 @@ function searchHelper(position, wordSoFar):
 
     <p>Clearly, if we were to start at the grid position that holds 'Q', we are going to be out of luck because there are no English words that begin with 'qd', 'qk', or 'qz'. With the current algorithm, we would waste time searching thousands of paths starting at 'Q' despite knowing after just two characters that we're never going to find another word. Why not cut the algorithm short once we realize the search is fruitless?</p>
 
-    <pre>
-function search():
+    <div class="ui segment">
+      <pre>function search():
   for every position in grid:
     wordSoFar := character at position
     searchHelper(position, wordSoFar)
@@ -70,8 +70,8 @@ function searchHelper(position, wordSoFar):
       wordSoFar := wordSoFar + character at neighbor
       searchHelper(neighbor, wordSoFar)
   if wordSoFar is in dictionary:
-    add wordSoFar to foundWords
-    </pre>
+    add wordSoFar to foundWords</pre>
+    </div>
 
     <h2 class="header" id="browse">Browse the code</h2>
     <p>Now we've got something. Source code, anyone? I'm feeling generous, so I'll throw in Java, C++, and PHP. Don't get used to it.</p>

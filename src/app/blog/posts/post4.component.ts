@@ -14,7 +14,7 @@ export class BlogPost4Component {
     });
   }
 
-  includePhp = `<html>
+  includeJavascript = `<html>
   <body>
     <div id="header"></div>
     <div>
@@ -29,7 +29,7 @@ export class BlogPost4Component {
   </script>
 </html>`;
 
-  includeJavascript = `<html>
+  includePhp = `<html>
   <body>
     <?php include('templates/header.html'); ?>
     <h1>I am some content.</h1>
@@ -189,8 +189,7 @@ qolloControllers.controller('MenuCtrl', [ 'AuthService', '$scope', '$state',
   };
 } ]);`;
 
-    appHtml = `<!-- app.html -->
-<nav class="tab-bar">
+    appHtml = `<nav class="tab-bar">
   <div class="left">
     <div class="logo logo-top">
       <span>Open</span>
@@ -222,8 +221,7 @@ qolloControllers.controller('MenuCtrl', [ 'AuthService', '$scope', '$state',
 
 <div ui-view></div>`;
 
-  menu = `<!-- menu.html -->
-<nav class="tab-bar">
+  menu = `<nav class="tab-bar">
   <div class="left">
     <div class="qollo-menu">
       <div class="qollo-menu-bookmark">
