@@ -26,7 +26,7 @@ import { HomeComponent } from './home/home.component';
 import { ProjectComponent } from './projects/project.component';
 
 import { BlogService }   from './blog/blog.service';
-import { ContactService }   from './contact/contact.service';
+import { LambdaService }   from './lambda/lambda.service';
 import { ProjectService }   from './projects/project.service';
 
 @NgModule({
@@ -60,7 +60,7 @@ import { ProjectService }   from './projects/project.service';
   ],
   providers: [
     BlogService,
-    ContactService,
+    LambdaService,
     ProjectService,
   ],
   bootstrap: [AppComponent]

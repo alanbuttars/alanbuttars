@@ -1,5 +1,6 @@
 import { Component, Renderer2 } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { LambdaService } from './../../lambda/lambda.service';
 
 export const LETTER_POINTS = {
   a: 1,
@@ -37,12 +38,66 @@ declare var $: any;
   templateUrl: './post1.component.html',
 })
 export class BlogPost1Component {
-  constructor(private renderer: Renderer2) {}
+
+  grid = [
+    ["", "", "", ""],
+    ["", "", "", ""],
+    ["", "", "", ""],
+    ["", "", "", ""]
+  ];
+
+  constructor(
+    private lambdaService: LambdaService
+  ) {}
 
   ngAfterViewInit() {
     $(".ui.sticky.page.navigation").sticky({
       context: "#blog"
     });
+  }
+
+  state = null;
+  errorMessage = null;
+  results = {};
+
+  jump(e: any) {
+    if (e.target.value.length == 1) {
+      var x = $("input.ruzzle-cell");
+      var next = x.eq(x.index(e.target) + 1);
+      next.focus();
+    }
+  }
+
+  assignPoints(e: any) {
+    var char = e.target.value;
+    var pts = LETTER_POINTS[char];
+    if (typeof pts != 'undefined') {
+    $(e.target).parent().children('.ruzzle-cell-points-sd').remove();
+    $(e.target).parent().children('.ruzzle-cell-points-dd').remove();
+      if (pts < 10) {
+        $(e.target).parent().append('<div class="ruzzle-cell-points-sd">' + pts + '</div>');
+      } else {
+        $(e.target).parent().append('<div class="ruzzle-cell-points-dd">' + pts + '</div>');
+      }
+    }
+  }
+
+  breakRuzzle() {
+    this.state = 'loading';
+    this.errorMessage = null;
+    this.results = {};
+
+    this.lambdaService.breakRuzzle(this.grid)
+      .subscribe(
+        (data: any) => {
+          this.state = 'success';
+          this.results = data;
+        },
+        error => {
+          this.state = 'error';
+          this.errorMessage = error;
+        }
+    );
   }
 
   javaCode = `package ruzzle;
@@ -622,32 +677,4 @@ function addIfAvailable($row, $col, $visitedNodes, &$nodes) {
 }
 ?>`;
 
-  jump(e: any) {
-    if (e.target.value.length == 1) {
-      console.log(e);
-      console.log(e.target);
-      var x = this.renderer.selectRootElement("input.ruzzle-cell");
-      console.log(x);
-      var next = x.eq(x.index(e.target) + 1);
-      next.focus();
-    }
-  }
-
-  assignPoints(e: any) {
-    var char = e.target.value;
-    var pts = LETTER_POINTS[char];
-    if (typeof pts != 'undefined') {
-    //$(e.target).parent().children('.ruzzle-cell-points-sd').remove();
-    //$(e.target).parent().children('.ruzzle-cell-points-dd').remove();
-      if (pts < 10) {
-      //$(e.target).parent().append('<div class="ruzzle-cell-points-sd">' + pts + '</div>');
-      } else {
-      //$(e.target).parent().append('<div class="ruzzle-cell-points-dd">' + pts + '</div>');
-      }
-    }
-  }
-
-  breakRuzzle(f: NgForm) {
-    console.log(f);
-  }
 }

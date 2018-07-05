@@ -4,10 +4,10 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()
-export class ContactService {
+export class LambdaService {
   constructor(private http: HttpClient) {}
 
-  send(model: any): Observable<{}> {
+  contact(model: any): Observable<{}> {
     var httpOptions = {
       headers: new HttpHeaders({}),
       params: new HttpParams()
@@ -17,6 +17,26 @@ export class ContactService {
     }
 
     return this.http.get("https://4w3dv080h6.execute-api.us-west-2.amazonaws.com/production/contact", httpOptions)
+    // return this.http.get("https://lambdas.alanbuttars.com/contact", httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  breakRuzzle(grid: any): Observable<{}> {
+    var specialCells: any = [
+      ["", "", "", ""],
+      ["", "", "", ""],
+      ["", "", "", ""],
+      ["", "", "", ""]
+    ];
+
+    var httpOptions = {
+      headers: new HttpHeaders({}),
+      params: new HttpParams()
+        .set("grid", grid)
+        .set("specialCells", specialCells)
+    }
+
+    return this.http.get("https://4w3dv080h6.execute-api.us-west-2.amazonaws.com/production/break-ruzzle", httpOptions)
     // return this.http.get("https://lambdas.alanbuttars.com/contact", httpOptions)
       .pipe(catchError(this.handleError));
   }

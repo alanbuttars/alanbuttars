@@ -1,5 +1,5 @@
 import { Component }      from '@angular/core';
-import { ContactService } from './contact.service';
+import { LambdaService } from './../lambda/lambda.service';
 
 @Component({
   selector: 'app-contact',
@@ -14,19 +14,22 @@ export class ContactComponent {
   };
   state = null;
   errorMessage = null;
+  result = {};
 
   constructor(
-    private contactService: ContactService
+    private lambdaService: LambdaService
   ) { }
 
   onSubmit() {
     this.state = 'loading';
     this.errorMessage = null;
+    this.result = {};
 
-    this.contactService.send(this.model)
+    this.lambdaService.contact(this.model)
       .subscribe(
         (data: any) => {
          this.state = 'success';
+         this.result = data;
         },
         error => {
           this.state = 'error';
