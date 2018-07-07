@@ -19,6 +19,7 @@ import { BlogPost5Component } from './blog/posts/post5.component';
 import { BlogPost6Component } from './blog/posts/post6.component';
 import { BlogPost7Component } from './blog/posts/post7.component';
 import { BlogPost8Component } from './blog/posts/post8.component';
+import { BlogPost9Component } from './blog/posts/post9.component';
 import { BlogSummaryComponent } from './blog/summary.component';
 import { ContactComponent } from './contact/contact.component';
 import { HeaderComponent } from './header/header.component';
@@ -42,6 +43,7 @@ import { ProjectService }   from './projects/project.service';
     BlogPost6Component,
     BlogPost7Component,
     BlogPost8Component,
+    BlogPost9Component,
     BlogSummaryComponent,
     ContactComponent,
     HeaderComponent,

@@ -8,7 +8,7 @@
     <p>The <code>org.apache.cordova.camera</code> plugin is a flexible library for accessing not only the device's camera but also the photo library. Adding it to your project is dead simple:</p>
 
     <div class="ui segment">
-      <pre><code highlight [language]="['shell']">alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.camera</code></pre>
+      <pre><code highlight [language]="['bash']">alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.camera</code></pre>
     </div>
 
     <p>There's very little info I can provide on the camera plugin that can't be superceded by their fantastic documentation, so instead I'll simply show you a couple code examples. For more full-fledged code, check out the OpenQollo code at this point in the <a href="downloads">downloads</a> section.</p>
@@ -35,7 +35,7 @@
 		<p>Accessing the camera and photo library is all well and good, but what do we do with the image once we have a handle on it? OpenQollo is a photo-sharing app, so we need the ability to upload an image from a user's device to the host server. Enter the <code>org.apache.cordova.file-transfer</code> plugin, along with it's dependency, <code>org.apache.cordova.file</code>. Let's add them to our application.</p>
 
     <div class="ui segment">
-      <pre><code highlight [language]="['shell']">alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.file
+      <pre><code highlight [language]="['bash']">alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.file
 alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.file-transfer</code></pre>
     </div>
 
@@ -66,7 +66,7 @@ alan@buttars ~/openqollo $ cordova plugin add org.apache.cordova.file-transfer</
 		<p><strong>Edit.</strong><br/>You may prefer instead to send your files to an FTP server, rather than a REST endpoint. For that, you'll want to use the <code>cordova-plugin-ftp</code>, available at <a href="https://github.com/xfally/cordova-plugin-ftp">https://github.com/xfally/cordova-plugin-ftp</a>:</p>
 
     <div class="ui segment">
-      <pre><code highlight [language]="['shell']">alan@buttars ~/openqollo $ cordova plugin add cordova-plugin-ftp
+      <pre><code highlight [language]="['bash']">alan@buttars ~/openqollo $ cordova plugin add cordova-plugin-ftp
 alan@buttars ~/openqollo $ cordova prepare</code></pre>
 		</div>
 	</div>

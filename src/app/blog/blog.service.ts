@@ -89,6 +89,18 @@ export const POSTS = [
     date: "5/5/2015",
     project: "openqollo",
   },
+
+  {
+    id: "9",
+    title: "Chewy: Elasticsearch with Ruby",
+    description: "Do you want to add search functionality to your Ruby application? You might consider the Chewy gem, a wrapper for the popular Elasticsearch service. In this post, I give a high-level overview of how to use the Chewy gem with valuable search examples.",
+    smallImage: "assets/images/chewy-small.png",
+    largeImage: "assets/images/chewy-large.png",
+    squareImage: "assets/images/chewy-square.png",
+    date: "7/6/2018",
+    project: null,
+  },
+
 ];
 
 @Injectable()
@@ -107,7 +119,7 @@ export class BlogService {
   }
 
   getFeaturedPosts(): Promise<Post[]> {
-    return this.getPostsByIds(["1", "4"])
+    return this.getPostsByIds(["1", "4", "9"])
   }
 
   getPostsByIds(postIds: string[]): Promise<Post[]> {

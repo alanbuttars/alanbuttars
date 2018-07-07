@@ -1,0 +1,462 @@
+<div class="ui container">
+  <div class="ui basic segment">
+    <h2 class="ui header" id="elasticsearch">Elasticsearch</h2>
+    <p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/getting-started.html">Elasticsearch</a> is a popular, open-source, customizable search engine based on REST. It supports clustering, custom indexing rules, simple sharding configurations, and replication. For a more thorough explanation of the service, I recommend checking their documentation. But let's get to it!</p>
+
+    <h3 class="ui header" id="elasticsearch-installation">Installation</h3>
+    <p>As of the writing of this article, <a href="https://www.elastic.co/guide/en/elasticsearch/reference/6.3/index.html">Elasticsearch 6.3</a> had been released. But for the below examples, I'm using <a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.5/index.html">Elasticsearch 5.5</a>. If you already have Java 1.8+ installed, starting up Elasticsearch is easy:</p>
+    <div class="ui segment">
+      <div class="ui attached top label">Linux instructions</div>
+      <pre><code highlight [language]="['bash']"># Download
+curl -O "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.5.1.tar.gz"
+# Extract
+tar -zxf elasticsearch-5.5.1.tar.gz
+# Deploy
+elasticsearch-5.5.1/bin/elasticsearch</code></pre>
+    </div>
+
+    <h3 class="ui header" id="elasticsearch-deployment">Deployment</h3>
+    <p>By default, the above commands will deploy a local instance of Elasticsearch to <code>localhost:9200</code>. You can easily check by typing that address into your address bar. For me, that looks like this:</p>
+    <img class="ui left image" src="assets/images/chewy-elasticsearch-localhost.png" />
+
+    <h2 class="ui header" id="chewy">Chewy</h2>
+    <p>Now that you have Elasticsearch up and running, it's time to talk to it. <a href="https://github.com/toptal/chewy#why-chewy">Chewy</a> is a powerful Ruby gem which acts as a client for your Elasticsearch instance. It's most notable functions are to:</p>
+    <ol class="ui list">
+      <li>Define how your application models are indexed</li>
+      <li>Define how your application models are searched</li>
+    </ol>
+
+    <h3 class="ui header" id="chewy-installation">Installation</h3>
+    <p>Chewy includes thorough <a href="https://github.com/toptal/chewy#installation">installation instructions</a>, but for your convenience I've included the following code samples for a Rails project.</p>
+
+    <sui-tabset #chewy_installation_code>
+      <div class="ui pointing secondary menu">
+        <a class="item" suiTabHeader="1">Gemfile</a>
+        <a class="item" suiTabHeader="2">config/initializers/chewy.rb</a>
+      </div>
+      <div class="ui segment" suiTabContent="1">
+        <pre><code highlight [code]="gemfile" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="2">
+        <pre><code highlight [code]="initializer" [language]="['ruby']"></code></pre>
+      </div>
+    </sui-tabset>
+
+    <h3 class="ui header" id="chewy-deployment">Deployment</h3>
+    <p>For local testing, it will also help to create some rake tasks to start up Elasticsearch.</p>
+
+    <sui-tabset #chewy_deployment_code>
+      <div class="ui pointing secondary menu">
+        <a class="item" suiTabHeader="1">lib/tasks/db.rake</a>
+        <a class="item" suiTabHeader="2">lib/tasks/elasticsearch.rake</a>
+      </div>
+      <div class="ui segment" suiTabContent="1">
+        <pre><code highlight [code]="dbRake" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="2">
+        <pre><code highlight [code]="elasticsearchRake" [language]="['ruby']"></code></pre>
+      </div>
+    </sui-tabset>
+
+    <p>Now you can easily stop and restart Elasticsearch without running into indexing issues by running:</p>
+
+    <div class="ui segment">
+      <pre><code highlight [language]="['bash']"># Only once
+/path/to/elasticsearch-installation-directory rake elasticsearch:go
+# Every time you update the indexes
+rake db:go</code></pre>
+    </div>
+
+    <h3 class="ui header" id="chewy-text-fields">Searching text fields</h3>
+    <p>Searching <a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.5/text.html">text fields</a> is dead simple in Elasticsearch. Fields are by default analyzed using the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.5/analysis-standard-analyzer.html">standard analyzer</a>, meaning that stored values are tokenized according to default grammar-based rules and treated as case-insensitive.</p>
+    <p>Let's say that you are designing a service which allows users to search for colleges by either their formal name or an alias. Your data might look like this:</p>
+
+    <h4><code>colleges</code></h4>
+    <table class="ui unstackable table">
+      <thead>
+        <tr>
+          <th><code>id</code></th>
+          <th><code>name</code></th>
+          <th><code>alias</code></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Massachusetts Institute of Technology</td>
+          <td>MIT<td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>California Institude of Technology</td>
+          <td>Caltech</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>University of Michigan</td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <sui-tabset #chewy_text_fields>
+      <div class="ui pointing secondary menu">
+        <a class="item" suiTabHeader="1">db/migrate/001_release_001.rb</a>
+        <a class="item" suiTabHeader="2">app/models/college.rb</a>
+        <a class="item" suiTabHeader="3">app/chewy/colleges_index.rb</a>
+        <a class="item" suiTabHeader="4">app/services/college_service.rb</a>
+      </div>
+      <div class="ui segment" suiTabContent="1">
+        <pre><code highlight [code]="chewyTextField['migration']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="2">
+        <pre><code highlight [code]="chewyTextField['record']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="3">
+        <pre><code highlight [code]="chewyTextField['index']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="4">
+        <pre><code highlight [code]="chewyTextField['service']" [language]="['ruby']"></code></pre>
+      </div>
+    </sui-tabset>
+
+    <h3 class="ui header" id="chewy-name-fields">Searching name fields</h3>
+    <p>Sometimes searching <a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.5/text.html">text fields</a> doesn't deliver quite as good of performance as you'd like. Common scenarios like searching for human names don't fit the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.5/analysis-standard-analyzer.html">standard analyzer</a> well, so instead you'll have to specify a custom indexing strategy.</p>
+    <p>An example of this comes courtesy of <a href="https://stackoverflow.com/a/20638511">Alex Brasetvik</a>. Rather than indexing the name as text, several custom filters are applied to the data below.</p>
+
+    <p>Note that for the following to work, you'll need to install an Elasticsearch extension:</p>
+    <div class="ui segment">
+      <pre><code highlight [language]="['bash']">sudo elasticsearch-5.5.1/bin/elasticsearch-plugin install analysis-phonetic</code></pre>
+    </div>
+
+    <h4><code>employees</code></h4>
+    <table class="ui unstackable table">
+      <thead>
+        <tr>
+          <th><code>id</code></th>
+          <th><code>first_name</code></th>
+          <th><code>last_name</code></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Alan</td>
+          <td>Buttars</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Charlie</td>
+          <td>Bucket</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Willy</td>
+          <td>Wonka</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <sui-tabset #chewy_name_fields>
+      <div class="ui pointing secondary menu">
+        <a class="item" suiTabHeader="1">db/migrate/001_release_001.rb</a>
+        <a class="item" suiTabHeader="2">app/models/employee.rb</a>
+        <a class="item" suiTabHeader="3">app/chewy/employees_index.rb</a>
+        <a class="item" suiTabHeader="4">app/services/employee_service.rb</a>
+      </div>
+      <div class="ui segment" suiTabContent="1">
+        <pre><code highlight [code]="chewyNameField['migration']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="2">
+        <pre><code highlight [code]="chewyNameField['record']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="3">
+        <pre><code highlight [code]="chewyNameField['index']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="4">
+        <pre><code highlight [code]="chewyNameField['service']" [language]="['ruby']"></code></pre>
+      </div>
+    </sui-tabset>
+
+    <h3 class="ui header" id="chewy-location-fields">Searching location fields</h3>
+    <p>If you want to search for records based on location, you'll want to use the <a href="https://www.elastic.co/guide/en/elasticsearch/reference/5.5/geo-point.html">geo-point datatype</a>. This datatype encompasses latitude and longitude pairs, so all you need to do is store the latitude and longitude in your model (note that you can programmatically derive these via the <a href="https://github.com/alexreisner/geocoder">geocoder</a> gem:</p>
+
+    <h4><code>colleges</code></h4>
+    <table class="ui unstackable table">
+      <thead>
+        <tr>
+          <th><code>id</code></th>
+          <th><code>name</code></th>
+          <th><code>latitude</code></th>
+          <th><code>longitude</code></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Massachusetts Institute of Technology</td>
+          <td>42.360</td>
+          <td>-71.095</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Stanford University</td>
+          <td>37.428</td>
+          <td>-122.170</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>University of Michigan</td>
+          <td>42.278</td>
+          <td>-83.738</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <sui-tabset #chewy_location_fields>
+      <div class="ui pointing secondary menu">
+        <a class="item" suiTabHeader="1">db/migrate/001_release_001.rb</a>
+        <a class="item" suiTabHeader="2">app/models/college.rb</a>
+        <a class="item" suiTabHeader="3">app/chewy/colleges_index.rb</a>
+        <a class="item" suiTabHeader="4">app/services/college_service.rb</a>
+      </div>
+      <div class="ui segment" suiTabContent="1">
+        <pre><code highlight [code]="chewyLocationField['migration']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="2">
+        <pre><code highlight [code]="chewyLocationField['record']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="3">
+        <pre><code highlight [code]="chewyLocationField['index']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="4">
+        <pre><code highlight [code]="chewyLocationField['service']" [language]="['ruby']"></code></pre>
+      </div>
+    </sui-tabset>
+
+    <h3 class="ui header" id="chewy-one-to-one">Searching through one-to-one fields</h3>
+    <p>Rarely will searches be so simple that you will only need to search through one table. Frequently, you'll want to limit results based on ownership. For example, let's say you are developing a content management site. You want a user to be able to search for stored projects, but you obviously only want to return projects which belong to the user.</p>
+    <p>The example below is similar; we want to allow a user to search for employees who work for a given college.</p>
+
+    <h4><code>colleges</code></h4>
+    <table class="ui unstackable table">
+      <thead>
+        <tr>
+          <th><code>id</code></th>
+          <th><code>name</code></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Creighton University</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Wonka Factory University</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4><code>employees</code></h4>
+    <table class="ui unstackable table">
+      <thead>
+        <tr>
+          <th><code>id</code></th>
+          <th><code>college_id</code></th>
+          <th><code>first_name</code></th>
+          <th><code>last_name</code></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>1</td>
+          <td>Alan</td>
+          <td>Buttars</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>2</td>
+          <td>Charlie</td>
+          <td>Bucket</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>2</td>
+          <td>Willy</td>
+          <td>Wonka</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <sui-tabset #chewy_one_to_one_fields>
+      <div class="ui pointing secondary menu">
+        <a class="item" suiTabHeader="1">db/migrate/001_release_001.rb</a>
+        <a class="item" suiTabHeader="2">app/models/college.rb</a>
+        <a class="item" suiTabHeader="3">app/models/employee.rb</a>
+        <a class="item" suiTabHeader="4">app/chewy/employees_index.rb</a>
+        <a class="item" suiTabHeader="5">app/services/employee_service.rb</a>
+      </div>
+      <div class="ui segment" suiTabContent="1">
+        <pre><code highlight [code]="chewyOneToOneField['migration']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="2">
+        <pre><code highlight [code]="chewyOneToOneField['collegeRecord']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="3">
+        <pre><code highlight [code]="chewyOneToOneField['employeeRecord']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="4">
+        <pre><code highlight [code]="chewyOneToOneField['index']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="5">
+        <pre><code highlight [code]="chewyOneToOneField['service']" [language]="['ruby']"></code></pre>
+      </div>
+    </sui-tabset>
+
+    <h3 class="ui header" id="chewy-one-to-many">Searching through one-to-many fields</h3>
+    <p>Another common scenario is searching for records via a one-to-many relationship with another table. For example, let's say you are designing a service to search for colleges, but you want to allow a user to search via a trait that could belong to many colleges. Your data might look like this:</p>
+
+    <h4><code>colleges</code></h4>
+    <table class="ui unstackable table">
+      <thead>
+        <tr>
+          <th><code>id</code></th>
+          <th><code>name</code></th>
+          <th><code>latitude</code></th>
+          <th><code>longitude</code></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Massachusetts Institute of Technology</td>
+          <td>42.360</td>
+          <td>-71.095</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Stanford University</td>
+          <td>37.428</td>
+          <td>-122.170</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>University of Michigan</td>
+          <td>42.278</td>
+          <td>-83.738</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4><code>labels</code></h4>
+    <table class="ui unstackable table">
+      <thead>
+        <tr>
+          <th><code>id</code></th>
+          <th><code>code</code></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>PRIVATE</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>PUBLIC</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4><code>colleges_labels</code></h4>
+    <table class="ui unstackable table">
+      <thead>
+        <tr>
+          <th><code>college_id</code></th>
+          <th><code>label_id</code></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>2</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <sui-tabset #chewy_one_to_many_fields>
+      <div class="ui pointing secondary menu">
+        <a class="item" suiTabHeader="1">db/migrate/001_release_001.rb</a>
+        <a class="item" suiTabHeader="2">app/models/college.rb</a>
+        <a class="item" suiTabHeader="3">app/models/label.rb</a>
+        <a class="item" suiTabHeader="4">app/chewy/colleges_index.rb</a>
+        <a class="item" suiTabHeader="5">app/chewy/labels_index.rb</a>
+        <a class="item" suiTabHeader="6">app/services/college_service.rb</a>
+      </div>
+      <div class="ui segment" suiTabContent="1">
+        <pre><code highlight [code]="chewyOneToManyField['migration']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="2">
+        <pre><code highlight [code]="chewyOneToManyField['collegeRecord']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="3">
+        <pre><code highlight [code]="chewyOneToManyField['labelRecord']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="4">
+        <pre><code highlight [code]="chewyOneToManyField['collegeIndex']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="5">
+        <pre><code highlight [code]="chewyOneToManyField['labelIndex']" [language]="['ruby']"></code></pre>
+      </div>
+      <div class="ui segment" suiTabContent="6">
+        <pre><code highlight [code]="chewyOneToManyField['service']" [language]="['ruby']"></code></pre>
+      </div>
+    </sui-tabset>
+
+    <h2 class="ui header" id="code">Browse the Code</h2>
+    <p>The above samples are a simplified version of a more full-fledged project that I've created on GitHub. Check it out!</p>
+    <p><a href="https://github.com/alanbuttars/chewy-demo">https://github.com/alanbuttars/chewy-demo</a><p>
+  </div>
+</div>
+
+<div class="ui right rail">
+  <div class="ui grid">
+    <div class="sixteen wide column computer only">
+      <div class="ui sticky page navigation">
+       <div class="ui vertical fluid secondary left menu"> 
+          <div class="left item header">
+            Navigation
+          </div>
+          <a class="left item" scrollTo scrollableElementSelector="body" scrollYTarget="0">Top</a>
+          <a class="left item" scrollTo href="#elasticsearch">Elasticsearch</a>
+          <div class="menu">
+            <a class="left item" scrollTo href="#elasticsearch-installation">Installation</a>
+            <a class="left item" scrollTo href="#elasticsearch-deployment">Deployment</a>
+          </div>
+          <a class="left item" scrollTo href="#chewy">Chewy</a>
+          <div class="menu">
+            <a class="left item" scrollTo href="#chewy-installation">Installation</a>
+            <a class="left item" scrollTo href="#chewy-deployment">Deployment</a>
+            <a class="left item" scrollTo href="#chewy-text-fields">Searching text fields</a>
+            <a class="left item" scrollTo href="#chewy-name-fields">Searching name fields</a>
+            <a class="left item" scrollTo href="#chewy-location-fields">Searching location fields</a>
+            <a class="left item" scrollTo href="#chewy-one-to-one">Searching through one-to-one fields</a>
+            <a class="left item" scrollTo href="#chewy-one-to-many">Searching through one-to-many fields</a>
+          </div>
+
+          <a class="left item" scrollTo href="#code">Browse the Code</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
