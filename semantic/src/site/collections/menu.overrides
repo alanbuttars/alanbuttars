@@ -1,3 +1,21 @@
 /*******************************
          Site Overrides
 *******************************/
+
+.ui.secondary.vertical.pointing.menu.left {
+  border-right: none;
+
+  border-left-width: @secondaryPointingBorderWidth;
+  border-left-style: solid;
+  border-left-color: @secondaryPointingBorderColor;
+}
+
+.ui.secondary.vertical.pointing.menu .item.left {
+  border-right: none;
+
+  border-left-style: solid;
+  border-left-color: transparent;
+  border-left-width: @secondaryPointingBorderWidth;
+  margin: @secondaryVerticalPointingItemMargin;
+  margin-left: -2px;
+}

@@ -8,80 +8,82 @@
     <p>But Neurotic Nate underestimated two things: my pettiness, and how unwisely I use my free time.</p>
 
     <h2 class="ui header" id="play">Play</h2>
-    <form #f="ngForm" (ngSubmit)="breakRuzzle()" novalidate>
-      <div class="ui grid">
-        <div class="six wide computer ten wide tablet sixteen wide mobile column">
-          <ng-container *ngFor="let row of [0,1,2,3]">
-            <div *ngFor="let col of [0,1,2,3]" class="ruzzle-cell-puttable" ondrop="drop(event)" ondragover="allowDrop(event)">
-              <input  class="ruzzle-cell" 
-                      name="grid[{{row}}][{{col}}]"
-                      [(ngModel)]="grid[row][col]"
-                      required
-                      data-special=""
-                      value=""
-                      maxlength="1"
-                      (input)="jump($event)"
-                      (focusout)="assignPoints($event)"
-                      />
-            </div>
-            <br/>
-          </ng-container>
-        </div>
-        <!-- <div class="two wide computer only six wide tablet only column"> -->
-        <!--   <ng&#45;container *ngFor="let row of ['DL', 'TL', 'DW', 'TW']"> -->
-        <!--     <div class="ruzzle&#45;cell&#45;draggable uk&#45;hidden&#45;small" draggable="true" ondragstart="drag(event)"> -->
-        <!--       <input class="ruzzle&#45;cell&#45;special" value="{{row}}" disabled="" /> -->
-        <!--     </div> -->
-        <!--     <br/> -->
-        <!--   </ng&#45;container> -->
-        <!-- </div> -->
-        <div class="eight wide computer sixteen wide tablet sixteen wide mobile column">
-          <button type="submit" class="ui button">Go</button>
-
-          <div *ngIf="state == 'loading'" class="ui medium text loader">Loading</div>
-          <div *ngIf="state == 'error'" class="ui error message">
-            <div class="header">Error</div>
-            <p>{{errorMessage}}</p>
+    <div class="ui segment">
+      <form #f="ngForm" (ngSubmit)="breakRuzzle()" novalidate>
+        <div class="ui grid">
+          <div class="six wide computer ten wide tablet sixteen wide mobile column">
+            <ng-container *ngFor="let row of [0,1,2,3]">
+              <div *ngFor="let col of [0,1,2,3]" class="ruzzle-cell-puttable" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <input  class="ruzzle-cell" 
+                        name="grid[{{row}}][{{col}}]"
+                        [(ngModel)]="grid[row][col]"
+                        required
+                        data-special=""
+                        value=""
+                        maxlength="1"
+                        (input)="jump($event)"
+                        (focusout)="assignPoints($event)"
+                        />
+              </div>
+              <br/>
+            </ng-container>
           </div>
+          <!-- <div class="two wide computer only six wide tablet only column"> -->
+          <!--   <ng&#45;container *ngFor="let row of ['DL', 'TL', 'DW', 'TW']"> -->
+          <!--     <div class="ruzzle&#45;cell&#45;draggable uk&#45;hidden&#45;small" draggable="true" ondragstart="drag(event)"> -->
+          <!--       <input class="ruzzle&#45;cell&#45;special" value="{{row}}" disabled="" /> -->
+          <!--     </div> -->
+          <!--     <br/> -->
+          <!--   </ng&#45;container> -->
+          <!-- </div> -->
+          <div class="eight wide computer sixteen wide tablet sixteen wide mobile column">
+            <button type="submit" class="ui button">Go</button>
 
-          <ng-container *ngIf="state == 'success'">
-            <div class="ui basic segment" style="padding-left: 0">
-              <div class="ruzzle-summary-title">Number of words</div>
-              <div class="ruzzle-summary-data">{{results.total_stats.count}}</div>
+            <div *ngIf="state == 'loading'" class="ui medium text loader">Loading</div>
+            <div *ngIf="state == 'error'" class="ui error message">
+              <div class="header">Error</div>
+              <p>{{errorMessage}}</p>
             </div>
 
-            <div class="ui basic segment" style="padding-left: 0">
-              <div class="ruzzle-summary-title">Number of points</div>
-              <div class="ruzzle-summary-data">{{results.total_stats.total_pts}}</div>
-            </div>
+            <ng-container *ngIf="state == 'success'">
+              <div class="ui basic segment" style="padding-left: 0">
+                <div class="ruzzle-summary-title">Number of words</div>
+                <div class="ruzzle-summary-data">{{results.total_stats.count}}</div>
+              </div>
 
-            <div class="ui basic segment" style="padding-left: 0">
-              <div class="ruzzle-summary-title">Top word</div>
-              <div class="ruzzle-summary-data">{{results.special_words.top_word}}</div>
-            </div>
+              <div class="ui basic segment" style="padding-left: 0">
+                <div class="ruzzle-summary-title">Number of points</div>
+                <div class="ruzzle-summary-data">{{results.total_stats.total_pts}}</div>
+              </div>
 
-            <div class="ui basic segment" style="padding-left: 0">
-              <div class="ruzzle-summary-title">Longest word</div>
-              <div class="ruzzle-summary-data">{{results.special_words.longest_word}}</div>
-            </div>
-          </ng-container>
+              <div class="ui basic segment" style="padding-left: 0">
+                <div class="ruzzle-summary-title">Top word</div>
+                <div class="ruzzle-summary-data">{{results.special_words.top_word}}</div>
+              </div>
+
+              <div class="ui basic segment" style="padding-left: 0">
+                <div class="ruzzle-summary-title">Longest word</div>
+                <div class="ruzzle-summary-data">{{results.special_words.longest_word}}</div>
+              </div>
+            </ng-container>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
 
-    <div class="ui grid" *ngIf="state == 'success'">
-      <div class="sixteen wide mobile eight wide tablet five wide computer column" *ngFor="let puzzle of results.puzzles">
-        <div>
-          <ng-container *ngFor="let row of [0,1,2,3]">
-            <ng-container *ngFor="let col of [0,1,2,3]">
-              <input *ngIf="puzzle.row == row && puzzle.col == col" class="ruzzle-cell-small-hit" disabled />
-              <input *ngIf="puzzle.row != row || puzzle.col != col" class="ruzzle-cell-small" disabled />
+      <div class="ui grid" *ngIf="state == 'success'">
+        <div class="sixteen wide mobile eight wide tablet five wide computer column" *ngFor="let puzzle of results.puzzles">
+          <div>
+            <ng-container *ngFor="let row of [0,1,2,3]">
+              <ng-container *ngFor="let col of [0,1,2,3]">
+                <input *ngIf="puzzle.row == row && puzzle.col == col" class="ruzzle-cell-small-hit" disabled />
+                <input *ngIf="puzzle.row != row || puzzle.col != col" class="ruzzle-cell-small" disabled />
+              </ng-container>
+              <ng-container *ngIf="puzzle.words[row]">
+                {{puzzle.words[row].word}}
+              </ng-container>
+              <br/>
             </ng-container>
-            <ng-container *ngIf="puzzle.words[row]">
-              {{puzzle.words[row].word}}
-            </ng-container>
-            <br/>
-          </ng-container>
+          </div>
         </div>
       </div>
     </div>

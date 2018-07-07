@@ -24,7 +24,7 @@
   display: -ms-flexbox;
   display: flex;
   margin: 1rem 0em;
-  font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'Lora', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   background: #FFFFFF;
   font-weight: normal;
   border: 1px solid rgba(34, 36, 38, 0.15);
@@ -1008,12 +1008,6 @@ Floated Menu / Item
   border-right-style: solid;
   border-right-color: rgba(34, 36, 38, 0.15);
 }
-.ui.secondary.vertical.pointing.menu.left {
-  border-right: none;
-  border-left-width: 2px;
-  border-left-style: solid;
-  border-left-color: rgba(34, 36, 38, 0.15);
-}
 .ui.secondary.vertical.pointing.menu .item {
   border-bottom: none;
   border-right-style: solid;
@@ -1021,14 +1015,6 @@ Floated Menu / Item
   border-radius: 0em !important;
   margin: 0em -2px 0em 0em;
   border-right-width: 2px;
-}
-.ui.secondary.vertical.pointing.menu .item.left {
-  border-right: none;
-  border-left-style: solid;
-  border-left-color: transparent;
-  border-left-width: 2px;
-  margin: 0em -2px 0em 0em;
-  margin-left: -2px;
 }
 
 /* Vertical Active */
@@ -2064,3 +2050,17 @@ Floated Menu / Item
          Site Overrides
 *******************************/
 
+.ui.secondary.vertical.pointing.menu.left {
+  border-right: none;
+  border-left-width: 2px;
+  border-left-style: solid;
+  border-left-color: rgba(34, 36, 38, 0.15);
+}
+.ui.secondary.vertical.pointing.menu .item.left {
+  border-right: none;
+  border-left-style: solid;
+  border-left-color: transparent;
+  border-left-width: 2px;
+  margin: 0em -2px 0em 0em;
+  margin-left: -2px;
+}

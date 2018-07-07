@@ -1,3 +1,14 @@
 /*******************************
     User Variable Overrides
 *******************************/
+.ui.grid > .row {
+  margin-bottom: (@rowSpacing / 2);
+
+  &.no-padding-bottom {
+    padding-bottom: 0;
+  }
+
+  &.no-margin-bottom {
+    margin-bottom: 0;
+  }
+}

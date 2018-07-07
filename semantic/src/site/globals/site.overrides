@@ -4,6 +4,12 @@
 
 @ruzzleColor: @primaryColor;
  
+h2:before {
+  content: "# ";
+  margin-left: -24px;
+
+}
+
 input.ruzzle-cell,
 input.ruzzle-cell-special,
 input.ruzzle-cell-small,
@@ -14,7 +20,7 @@ input.ruzzle-cell-small-hit {
   border: 0;
   text-transform: capitalize;
   text-align: center;
-  font-family: Tahoma;
+  //font-family: Tahoma;
   font-weight: 800;
   //margin-right: -1px;
   margin-right: 2px;
@@ -207,7 +213,7 @@ input.ruzzle-cell-small-hit {
   position: absolute;
   top: -38px;
   display: inline;
-  font-family: Consolas;
+  //font-family: Consolas;
   font-size: 14px; }
 
 .ruzzle-cell-points-sd {
@@ -224,7 +230,7 @@ input.ruzzle-cell-small-hit {
   background-color: @ruzzleColor;
   color: white;
   padding: 2px;
-  font-family: Consolas;
+  //font-family: Consolas;
   font-size: 12px; }
 
 .ruzzle-result {

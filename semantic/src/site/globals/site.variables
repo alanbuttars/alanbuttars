@@ -1,3 +1,9 @@
 /*******************************
      User Global Variables
 *******************************/
+
+@headerFontName    : 'Ubuntu';
+@fontName          : 'Lora';
+
+@headerFont        : @headerFontName, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+

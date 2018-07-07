@@ -13,7 +13,7 @@
              Page
 *******************************/
 
-@import url('https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin');
+@import url('https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic&subset=latin');
 html,
 body {
   height: 100%;
@@ -27,7 +27,7 @@ body {
   overflow-x: hidden;
   min-width: 320px;
   background: #FFFFFF;
-  font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'Lora', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   font-size: 14px;
   line-height: 1.4285em;
   color: rgba(0, 0, 0, 0.87);
@@ -44,7 +44,7 @@ h2,
 h3,
 h4,
 h5 {
-  font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  font-family: 'Ubuntu', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   line-height: 1.28571429em;
   margin: calc(2rem -  0.14285714em ) 0em 1rem;
   font-weight: bold;
@@ -202,6 +202,10 @@ body .ui.inverted::-webkit-scrollbar-thumb:hover {
          Site Overrides
 *******************************/
 
+h2:before {
+  content: "# ";
+  margin-left: -24px;
+}
 input.ruzzle-cell,
 input.ruzzle-cell-special,
 input.ruzzle-cell-small,
@@ -212,7 +216,6 @@ input.ruzzle-cell-small-hit {
   border: 0;
   text-transform: capitalize;
   text-align: center;
-  font-family: Tahoma;
   font-weight: 800;
   margin-right: 2px;
   margin-bottom: 1px;
@@ -545,7 +548,6 @@ input.ruzzle-cell-small-hit {
   position: absolute;
   top: -38px;
   display: inline;
-  font-family: Consolas;
   font-size: 14px;
 }
 .ruzzle-cell-points-sd {
@@ -562,7 +564,6 @@ input.ruzzle-cell-small-hit {
   background-color: #2185D0;
   color: white;
   padding: 2px;
-  font-family: Consolas;
   font-size: 12px;
 }
 .ruzzle-result {
