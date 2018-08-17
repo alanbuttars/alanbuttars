@@ -86,7 +86,9 @@ namespace :elasticsearch do
 end`;
 
   chewyTextField = {
-    migration: `class Release001 < ActiveRecord::Migration[5.0]
+    migration: `# db/migrate/001_release_001.rb
+
+class Release001 < ActiveRecord::Migration[5.0]
   def change
     create_table :colleges do |t|
       # Index all fields that will be searched
@@ -94,12 +96,16 @@ end`;
       t.string :alias,          null: true, index: true
     end`,
   
-    record: `class College < ActiveRecord::Base
+    record: `# app/models/college.rb
+
+class College < ActiveRecord::Base
   # Ensure indexes are updated when records are updated
   update_index('colleges#college') { self }
 end`,
   
-    index: `class CollegesIndex < Chewy::Index
+    index: `# app/chewy/colleges_index.rb
+
+class CollegesIndex < Chewy::Index
   define_type College do
     # On creation/update, define the fields to be indexed
     root do
@@ -109,7 +115,9 @@ end`,
   end
 end`,
 
-  service: `class CollegeService
+    service: `# app/services/college_service.rb
+
+class CollegeService
   def self.search(params)
     query = params[:query]
 
@@ -138,7 +146,9 @@ end`
   };
 
   chewyNameField = {
-    migration: `class Release001 < ActiveRecord::Migration[5.0]
+    migration: `# db/migrate/001_release_001.rb
+
+class Release001 < ActiveRecord::Migration[5.0]
   def change
     create_table :employees do |t|
       # Index all fields that will be searched
@@ -147,7 +157,9 @@ end`
     end
   end
 end`,
-    record: `class Employee < ActiveRecord::Base
+    record: `# app/models/employee.rb
+
+class Employee < ActiveRecord::Base
   # Ensure indexes are updated when records are updated
   update_index('employees#employee') { self }
 
@@ -155,7 +167,9 @@ end`,
     "#{first_name} #{last_name}"
   end
 end`,
-    index: `class EmployeesIndex < Chewy::Index
+    index: `# app/chewy/employees_index.rb
+
+class EmployeesIndex < Chewy::Index
   settings analysis: {
     analyzer: {
       metaphone: {
@@ -192,7 +206,9 @@ end`,
     end
   end
 end`,
-    service: `class EmployeeService
+    service: `# app/services/employee_service.rb
+
+class EmployeeService
   def self.search(params)
     query = params[:query]
 
@@ -244,7 +260,9 @@ end`
   };
 
   chewyLocationField = {
-    migration: `class Release001 < ActiveRecord::Migration[5.0]
+    migration: `# db/migrate/001_release_001.rb
+
+class Release001 < ActiveRecord::Migration[5.0]
   def change
     create_table :colleges do |t|
       t.string :name,           null: false, index: true
@@ -256,12 +274,16 @@ end`
   end
 end`,
 
-    record: `class College < ActiveRecord::Base
+    record: `# app/models/college.rb
+
+class College < ActiveRecord::Base
   # Ensure indexes are updated when records are updated
   update_index('colleges#college') { self }
 end`,
 
-    index: `class CollegesIndex < Chewy::Index
+    index: `# app/chewy/colleges_index.rb
+
+class CollegesIndex < Chewy::Index
   define_type College do
     root do
       field :name
@@ -273,7 +295,9 @@ end`,
   end
 end`,
 
-    service: `class CollegeService
+    service: `# app/services/college_service.rb
+
+class CollegeService
   def self.search(params)
     query = params[:query]
     latitude = params[:latitude]
@@ -328,7 +352,9 @@ end`
   };
 
   chewyOneToOneField = {
-    migration: `class Release001 < ActiveRecord::Migration[5.0]
+    migration: `# db/migrate/001_release_001.rb
+
+class Release001 < ActiveRecord::Migration[5.0]
   def change
     create_table :colleges do |t|
       t.string :name,           null: false, index: true
@@ -342,7 +368,9 @@ end`
     end
   end
 end`,
-    employeeRecord: `class Employee < ActiveRecord::Base
+    employeeRecord: `# app/models/employee.rb
+
+class Employee < ActiveRecord::Base
   # Ensure indexes are updated when records are updated
   update_index('employees#employee') { self }
   update_index('colleges') { college }
@@ -353,7 +381,9 @@ end`,
     "#{first_name} #{last_name}"
   end
 end`,
-    collegeRecord: `class College < ActiveRecord::Base
+    collegeRecord: `# app/models/college.rb
+
+class College < ActiveRecord::Base
   # Ensure indexes are updated when a college record is updated
   update_index('colleges#college') { self }
   # Ensure employee indexes are updated when a college record is updated
@@ -362,7 +392,9 @@ end`,
   has_many :employees
 end`,
 
-    index: `class EmployeesIndex < Chewy::Index
+    index: `# app/chewy/employees_index.rb
+
+class EmployeesIndex < Chewy::Index
   # These come from the "Searching name fields example"
   settings analysis: {
     analyzer: {
@@ -404,7 +436,9 @@ end`,
     end
   end
 end`,
-    service: `class EmployeeService
+    service: `# app/services/employee_service.rb
+
+class EmployeeService
   def self.search(params)
     college_id = params[:college_id]
     query = params[:query]
@@ -462,7 +496,9 @@ end`
   };
 
   chewyOneToManyField = {
-    migration: `class Release001 < ActiveRecord::Migration[5.0]
+    migration: `# db/migrate/001_release_001.rb
+    
+class Release001 < ActiveRecord::Migration[5.0]
   def change
     # Index all fields that will be searched
     create_table :colleges do |t|
@@ -482,7 +518,9 @@ end`
     end
   end
 end`,
-    collegeRecord: `class College < ActiveRecord::Base
+    collegeRecord: `# app/models/college.rb
+
+class College < ActiveRecord::Base
   # Ensure college index is updated when a college record is updated
   update_index('colleges#college') { self }
   # Ensure labels indices are updated when a college record is updated
@@ -490,7 +528,9 @@ end`,
 
   has_and_belongs_to_many :labels
 end`,
-    labelRecord: `class Label < ActiveRecord::Base
+    labelRecord: `# app/models/label.rb
+
+class Label < ActiveRecord::Base
   # Ensure label index is updated when a label record is updated
   update_index('labels#label') { self }
   # Ensure associated colleges' indices are updated when a label record is updated
@@ -498,7 +538,9 @@ end`,
 
   has_and_belongs_to_many :colleges
 end`,
-    collegeIndex: `class CollegesIndex < Chewy::Index
+    collegeIndex: `# app/chewy/colleges_index.rb
+
+class CollegesIndex < Chewy::Index
   # The includes statement ensures that the associated labels are preloaded
   define_type College.includes(:labels) do
     root do
@@ -516,13 +558,17 @@ end`,
     end
   end
 end`,
-    labelIndex: `class LabelsIndex < Chewy::Index
+    labelIndex: `# app/chewy/labels_index.rb
+
+class LabelsIndex < Chewy::Index
   # No need to index anything, since the label code will be treated
   # as a keyword
   define_type Label do
   end
 end`,
-    service: `class CollegeService
+    service: `# app/services/college_service.rb
+
+class CollegeService
   def self.search(params)
     query = params[:query]
     label_code = params[:label_code]
