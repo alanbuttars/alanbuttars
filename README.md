@@ -30,5 +30,6 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ```shell
 ng build --prod --base-href "https://alanbuttars.com"
-angular-cli-ghpages --dir dist/alanbuttars
+# angular-cli-ghpages --dir dist/alanbuttars
+npx ngh --dir dist/alanbuttars
 ```
